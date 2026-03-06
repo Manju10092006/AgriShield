@@ -1,0 +1,34 @@
+# Environment / secrets
+.env
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Node
+node_modules/
+package-lock.json
+
+# Logs
+logs/
+
+# Models (large binary files)
+models/*.h5
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Dataset images & archives (too large for git)
+archive (3)/
+archive (3).zip
+datasets/

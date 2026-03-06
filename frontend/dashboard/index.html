@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriShield AI — Crop Disease Dashboard</title>
+    <meta name="description"
+        content="AgriShield AI premium crop disease detection dashboard. Upload crop images, get ML predictions, and receive AI-powered agricultural advisory." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <!-- ======== MOBILE OVERLAY ======== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ======== SIDEBAR ======== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
+                            fill="url(#logoGrad)" opacity="0.15" />
+                        <path
+                            d="M17 8c-2 0-3.5 1.5-5 3-1.5-1.5-3-3-5-3-3 0-4 3-1 6 2 2 4.5 4 6 5 1.5-1 4-3 6-5 3-3 2-6-1-6z"
+                            fill="url(#logoGrad)" />
+                        <path d="M12 11v8M12 11l-3 4M12 11l3 4" stroke="#0B1F17" stroke-width="1.2"
+                            stroke-linecap="round" />
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0" y1="0" x2="24" y2="24">
+                                <stop stop-color="#1F7A4C" />
+                                <stop offset="1" stop-color="#2ECC71" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-name">AgriShield</span>
+                    <span class="logo-badge">AI</span>
+                </div>
+            </div>
+            <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" id="navDashboard">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                    <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                    <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                    <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                </svg>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" id="navCropAnalysis">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <span>Crop Analysis</span>
+            </a>
+            <a href="#" class="nav-item" id="navRiskMonitor">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+                <span>Risk Monitor</span>
+            </a>
+            <a href="#" class="nav-item" id="navInsurance">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                <span>Insurance Alerts</span>
+            </a>
+            <a href="#" class="nav-item" id="navSettings">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                        d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+                </svg>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-badges">
+                <div class="badge-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                    </svg>
+                    <span>Model Accuracy: 88.8%</span>
+                </div>
+                <div class="badge-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" />
+                        <path d="M16 3l-4 4-4-4" />
+                    </svg>
+                    <span>Powered by MobileNetV2</span>
+                </div>
+            </div>
+            <a href="#" class="nav-item logout" id="navLogout">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- ======== MAIN CONTENT ======== -->
+    <main class="main" id="mainContent">
+
+        <!-- Top Bar -->
+        <header class="topbar">
+            <button class="hamburger" id="hamburgerBtn" aria-label="Open menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round">
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+            </button>
+            <div class="topbar-title">
+                <h1>Crop Disease Analysis</h1>
+                <p class="topbar-subtitle">Upload · Predict · Advise</p>
+            </div>
+            <div class="topbar-right">
+                <div class="trust-badge" id="healthBadge">
+                    <span class="trust-dot"></span>
+                    <span>System Online</span>
+                </div>
+                <div class="trust-badge ai-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2">
+                        <path
+                            d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.27 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    </svg>
+                    <span>AI Advisory Engine</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+
+            <!-- ====== CENTER: Upload + Results ====== -->
+            <section class="panel panel-center" id="uploadSection">
+
+                <!-- Upload Card -->
+                <div class="glass-card upload-card" id="uploadCard">
+                    <div class="upload-zone" id="uploadZone">
+                        <div class="upload-zone-inner">
+                            <div class="upload-icon">
+                                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="url(#uploadGrad)"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <defs>
+                                        <linearGradient id="uploadGrad" x1="0" y1="0" x2="24" y2="24">
+                                            <stop stop-color="#1F7A4C" />
+                                            <stop offset="1" stop-color="#2ECC71" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                    <polyline points="17 8 12 3 7 8" />
+                                    <line x1="12" y1="3" x2="12" y2="15" />
+                                </svg>
+                            </div>
+                            <p class="upload-title">Drop crop image here or <span class="upload-browse">browse</span>
+                            </p>
+                            <p class="upload-hint">Accepts PNG, JPG, JPEG · Max 10MB</p>
+                            <input type="file" id="fileInput" accept="image/png,image/jpeg,image/jpg" hidden />
+                        </div>
+                    </div>
+
+                    <!-- Preview -->
+                    <div class="preview-area hidden" id="previewArea">
+                        <div class="preview-img-wrap">
+                            <img id="previewImage" alt="Crop preview" />
+                        </div>
+                        <div class="preview-meta">
+                            <span class="file-name" id="fileName"></span>
+                            <span class="file-size" id="fileSize"></span>
+                        </div>
+                        <div class="preview-actions">
+                            <button class="btn btn-primary" id="analyzeBtn" disabled>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                </svg>
+                                <span>Analyze Crop</span>
+                            </button>
+                            <button class="btn btn-ghost" id="clearBtn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round">
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                                <span>Clear</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Progress -->
+                    <div class="progress-area hidden" id="progressArea">
+                        <div class="spinner"></div>
+                        <p class="progress-text">Analyzing crop health…</p>
+                        <div class="progress-bar-wrap">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Card -->
+                <div class="glass-card error-card hidden" id="errorCard">
+                    <div class="error-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#E74C3C" stroke-width="2"
+                            stroke-linecap="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="15" y1="9" x2="9" y2="15" />
+                            <line x1="9" y1="9" x2="15" y2="15" />
+                        </svg>
+                    </div>
+                    <p class="error-title">Prediction Service Unavailable</p>
+                    <p class="error-desc" id="errorDesc">Please check your connection and try again.</p>
+                    <button class="btn btn-ghost" id="errorRetry">Retry</button>
+                </div>
+
+                <!-- Result Card -->
+                <div class="glass-card result-card hidden" id="resultCard">
+                    <div class="result-header">
+                        <h2 class="result-title">Prediction Result</h2>
+                        <div class="risk-badge" id="riskBadge">
+                            <span class="risk-dot" id="riskDot"></span>
+                            <span id="riskLabel">—</span>
+                        </div>
+                    </div>
+
+                    <div class="result-body">
+                        <!-- Gauge -->
+                        <div class="gauge-section">
+                            <div class="gauge-wrap">
+                                <svg class="gauge-svg" viewBox="0 0 200 120">
+                                    <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="rgba(255,255,255,0.08)"
+                                        stroke-width="16" stroke-linecap="round" />
+                                    <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="url(#gaugeGrad)"
+                                        stroke-width="16" stroke-linecap="round" id="gaugeArc"
+                                        stroke-dasharray="0 251.3" />
+                                    <defs>
+                                        <linearGradient id="gaugeGrad" x1="0" y1="0" x2="200" y2="0">
+                                            <stop stop-color="#E74C3C" />
+                                            <stop offset="0.5" stop-color="#F39C12" />
+                                            <stop offset="1" stop-color="#2ECC71" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <div class="gauge-value" id="gaugeValue">0%</div>
+                                <p class="gauge-label">Confidence</p>
+                            </div>
+                        </div>
+
+                        <!-- Disease Name -->
+                        <div class="disease-section">
+                            <p class="disease-label">Detected Disease</p>
+                            <h3 class="disease-name" id="diseaseName">—</h3>
+                        </div>
+
+                        <!-- Top 3 -->
+                        <div class="top3-section">
+                            <p class="top3-label">Top 3 Predictions</p>
+                            <div class="top3-list" id="top3List"></div>
+                        </div>
+
+                        <!-- Severity Gauge -->
+                        <div class="severity-section">
+                            <p class="severity-label">Disease Severity</p>
+                            <div class="severity-bar-wrap">
+                                <div class="severity-bar" id="severityBar"></div>
+                            </div>
+                            <div class="severity-labels">
+                                <span>Low</span><span>Moderate</span><span>High</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Extra features -->
+                    <div class="result-footer">
+                        <div class="mini-stat">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2ECC71"
+                                stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                            </svg>
+                            <span>Trend: Stable</span>
+                        </div>
+                        <div class="mini-stat weather-badge">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F39C12"
+                                stroke-width="2">
+                                <path d="M17 18a5 5 0 00-5-5 5 5 0 00-5 5" />
+                                <line x1="12" y1="9" x2="12" y2="3" />
+                                <line x1="18.36" y1="11.64" x2="21.17" y2="8.83" />
+                                <line x1="5.64" y1="11.64" x2="2.83" y2="8.83" />
+                            </svg>
+                            <span>Weather Risk: —</span>
+                        </div>
+                        <button class="btn btn-outline" id="insuranceBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                            <span>Run Insurance Check</span>
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- ====== RIGHT: AI Advisory ====== -->
+            <section class="panel panel-right" id="advisorySection">
+
+                <div class="glass-card advisory-card" id="advisoryCard">
+                    <div class="advisory-header">
+                        <div class="advisory-title-wrap">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#aiGrad)"
+                                stroke-width="2" stroke-linecap="round">
+                                <defs>
+                                    <linearGradient id="aiGrad" x1="0" y1="0" x2="24" y2="24">
+                                        <stop stop-color="#1F7A4C" />
+                                        <stop offset="1" stop-color="#2ECC71" />
+                                    </linearGradient>
+                                </defs>
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.27 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                            <h2>AI Advisory</h2>
+                        </div>
+                        <div class="advisory-actions hidden" id="advisoryActions">
+                            <button class="icon-btn" id="copyAdvisory" title="Copy advisory">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" />
+                                    <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+                                </svg>
+                            </button>
+                            <button class="icon-btn" id="downloadAdvisory" title="Download as PDF">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                    <polyline points="7 10 12 15 17 10" />
+                                    <line x1="12" y1="15" x2="12" y2="3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder -->
+                    <div class="advisory-placeholder" id="advisoryPlaceholder">
+                        <div class="placeholder-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(168,196,179,0.3)"
+                                stroke-width="1.5" stroke-linecap="round">
+                                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                            </svg>
+                        </div>
+                        <p>AI advisory will appear here after crop analysis</p>
+                    </div>
+
+                    <!-- Typing Indicator -->
+                    <div class="typing-indicator hidden" id="typingIndicator">
+                        <div class="typing-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <p>AI is generating advisory…</p>
+                    </div>
+
+                    <!-- Advisory Content -->
+                    <div class="advisory-content hidden" id="advisoryContent"></div>
+
+                    <!-- AI Error -->
+                    <div class="advisory-error hidden" id="advisoryError">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F39C12" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="12" />
+                            <line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg>
+                        <p>AI advisory temporarily unavailable.</p>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

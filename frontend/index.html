@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AgriShield AI — AI Infrastructure for Climate-Resilient Agriculture</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="AgriShield AI combines computer vision, climate risk modeling, and autonomous financial workflows to protect farmers at scale. Enterprise-grade agricultural intelligence." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ═══════════ NAVBAR ═══════════ -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-brand">
+        <span class="nav-brand-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="8" fill="url(#brandG)"/>
+            <path d="M8 20L14 8l6 12H8z" fill="#fff" opacity=".9"/>
+            <defs><linearGradient id="brandG" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#1F7A5A"/><stop offset="1" stop-color="#0F3D2E"/></linearGradient></defs>
+          </svg>
+        </span>
+        <span class="nav-brand-text">AgriShield<span class="brand-ai">AI</span></span>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="#about" class="nav-link">Platform</a>
+        <a href="#technology" class="nav-link">Technology</a>
+        <a href="#modules" class="nav-link">Insurance Automation</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="#docs" class="nav-link">Documentation</a>
+      </nav>
+
+      <div class="nav-right">
+        <a href="dashboard.html" class="nav-sign-in">Sign In</a>
+        <a href="#demo" class="btn-demo">
+          <span>Request Demo</span>
+          <span class="btn-demo-arrow">→</span>
+        </a>
+      </div>
+
+      <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ═══════════ HERO ═══════════ -->
+    <section class="hero" id="hero">
+      <div class="hero-bg-layer">
+        <div class="hero-gradient"></div>
+        <div class="hero-particles" id="heroParticles"></div>
+      </div>
+      <div class="container hero-container">
+        <div class="hero-left">
+          <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            <span>AI-Powered Agricultural Intelligence</span>
+          </div>
+          <h1 class="hero-title">
+            AI Infrastructure for<br/>
+            <span class="hero-title-accent">Climate-Resilient</span><br/>
+            Agriculture.
+          </h1>
+          <p class="hero-subtitle">
+            AgriShield AI combines computer vision, climate risk modeling, and autonomous financial workflows to protect farmers at scale.
+          </p>
+          <div class="hero-cta-row">
+            <a href="#demo" class="btn-primary-lg">
+              <span>Request Demo</span>
+              <span class="btn-arrow-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </a>
+            <a href="#about" class="btn-outline-lg">Explore Platform</a>
+          </div>
+          <div class="hero-trust-row">
+            <div class="hero-trust-avatars">
+              <span class="trust-av" style="background:#1F7A5A;">J</span>
+              <span class="trust-av" style="background:#4FB286;">R</span>
+              <span class="trust-av" style="background:#0F3D2E;">K</span>
+              <span class="trust-av" style="background:#E67E22;">S</span>
+            </div>
+            <span class="hero-trust-text">Trusted by <strong>500+</strong> agricultural enterprises</span>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-dashboard-preview">
+            <!-- Floating glassmorphism cards -->
+            <div class="hero-glass-card hero-gc-1" data-float="1">
+              <div class="hgc-header">
+                <span class="hgc-dot hgc-dot-green"></span>
+                <span class="hgc-label">Disease Detection</span>
+              </div>
+              <div class="hgc-body">
+                <span class="hgc-crop">Tomato — Late Blight</span>
+                <div class="hgc-bar-wrapper">
+                  <div class="hgc-bar" style="width:94%"></div>
+                </div>
+                <span class="hgc-confidence">94.2% confidence</span>
+              </div>
+            </div>
+
+            <div class="hero-glass-card hero-gc-2" data-float="2">
+              <div class="hgc-header">
+                <span class="hgc-dot hgc-dot-orange"></span>
+                <span class="hgc-label">Risk Score</span>
+              </div>
+              <div class="hgc-body">
+                <div class="hgc-gauge">
+                  <svg viewBox="0 0 80 80">
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="#2B2F36" stroke-width="5" opacity=".1"/>
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="url(#riskGrad)" stroke-width="5" stroke-dasharray="214" stroke-dashoffset="64" stroke-linecap="round" transform="rotate(-90 40 40)"/>
+                    <defs><linearGradient id="riskGrad"><stop stop-color="#E67E22"/><stop offset="1" stop-color="#4FB286"/></linearGradient></defs>
+                  </svg>
+                  <span class="hgc-gauge-val">0.72</span>
+                </div>
+                <span class="hgc-risk-label">Moderate-High</span>
+              </div>
+            </div>
+
+            <div class="hero-glass-card hero-gc-3" data-float="3">
+              <div class="hgc-header">
+                <span class="hgc-dot hgc-dot-blue"></span>
+                <span class="hgc-label">Insurance</span>
+              </div>
+              <div class="hgc-body">
+                <div class="hgc-payout-badge">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8l4 4 8-8" stroke="#4FB286" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span>Payout Triggered</span>
+                </div>
+                <span class="hgc-amount">₹ 24,500</span>
+                <span class="hgc-status">Auto-processed • 2.1s</span>
+              </div>
+            </div>
+
+            <!-- Background image frame -->
+            <div class="hero-img-frame">
+              <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&q=80" alt="Aerial farmland" loading="eager"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ SOCIAL PROOF STATS ═══════════ -->
+    <section class="stats-bar" id="stats">
+      <div class="container stats-inner">
+        <div class="stat-item">
+          <span class="stat-number" data-count="41276">0</span>
+          <span class="stat-label">Crop Images Trained</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number" data-count="16">0</span>
+          <span class="stat-label">Disease Classes</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number" data-count="10" data-suffix="-Year">0</span>
+          <span class="stat-label">Rainfall Models</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number stat-text-val">Autonomous</span>
+          <span class="stat-label">Payout Engine</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ ABOUT / ARCHITECTURE ═══════════ -->
+    <section class="section-about" id="about">
+      <div class="container about-grid">
+        <div class="about-visual">
+          <div class="arch-diagram">
+            <div class="arch-node arch-node-center">
+              <span class="arch-icon">🧠</span>
+              <span>AgriShield<br/>Core Engine</span>
+            </div>
+            <div class="arch-node arch-node-tl">
+              <span class="arch-icon">📸</span>
+              <span>Crop Vision<br/>MobileNetV2</span>
+            </div>
+            <div class="arch-node arch-node-tr">
+              <span class="arch-icon">🌧️</span>
+              <span>Climate Risk<br/>Engine</span>
+            </div>
+            <div class="arch-node arch-node-bl">
+              <span class="arch-icon">🛡️</span>
+              <span>Insurance<br/>Automation</span>
+            </div>
+            <div class="arch-node arch-node-br">
+              <span class="arch-icon">📊</span>
+              <span>Analytics<br/>Dashboard</span>
+            </div>
+            <svg class="arch-lines" viewBox="0 0 400 300">
+              <line x1="200" y1="150" x2="80" y2="50" stroke="#1F7A5A" stroke-width="1.5" opacity=".3"/>
+              <line x1="200" y1="150" x2="320" y2="50" stroke="#1F7A5A" stroke-width="1.5" opacity=".3"/>
+              <line x1="200" y1="150" x2="80" y2="250" stroke="#1F7A5A" stroke-width="1.5" opacity=".3"/>
+              <line x1="200" y1="150" x2="320" y2="250" stroke="#1F7A5A" stroke-width="1.5" opacity=".3"/>
+            </svg>
+          </div>
+        </div>
+        <div class="about-text">
+          <span class="section-badge">About the Platform</span>
+          <h2 class="section-heading">An Integrated Agricultural<br/>Intelligence Infrastructure</h2>
+          <p class="section-body">AgriShield AI isn't just another crop app. It's a complete AI-powered agricultural intelligence infrastructure — from satellite vision to autonomous financial protection.</p>
+          <div class="about-features">
+            <div class="about-feat">
+              <div class="about-feat-icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#1F7A5A" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="#1F7A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <h4>Crop Intelligence Engine</h4>
+                <p>Computer vision models trained on 41K+ images for real-time disease detection.</p>
+              </div>
+            </div>
+            <div class="about-feat">
+              <div class="about-feat-icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#1F7A5A" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="#1F7A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <h4>Climate Risk Engine</h4>
+                <p>Rolling rainfall averages, deficit detection, and multi-year climate modeling.</p>
+              </div>
+            </div>
+            <div class="about-feat">
+              <div class="about-feat-icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#1F7A5A" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="#1F7A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <h4>Autonomous Insurance Agent</h4>
+                <p>Parametric triggers, automated payouts, JSON audit trails, API simulation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ SERVICES / MODULES ═══════════ -->
+    <section class="section-modules" id="modules">
+      <div class="container">
+        <div class="section-center-header">
+          <span class="section-badge">Core Modules</span>
+          <h2 class="section-heading">Three engines. One intelligent shield.</h2>
+          <p class="section-sub">Production-ready ML pipelines that transform raw field data into autonomous protective actions.</p>
+        </div>
+        <div class="modules-grid">
+          <article class="module-card" id="module-crop">
+            <div class="module-icon-wrap">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="#1F7A5A" opacity=".1"/><path d="M16 8v16M8 16h16" stroke="#1F7A5A" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <span class="module-tag">Engine 01</span>
+            <h3>Crop Intelligence Engine</h3>
+            <p>Upload leaf images, drone captures, or sensor feeds. Our MobileNetV2 transfer learning models deliver real-time disease classification with confidence scoring across 16 crop disease categories.</p>
+            <ul class="module-list">
+              <li>Image upload & preprocessing</li>
+              <li>MobileNetV2 Transfer Learning</li>
+              <li>16-class disease classification</li>
+              <li>Confidence scoring & heatmaps</li>
+            </ul>
+            <div class="module-tech-chips">
+              <span>TensorFlow</span>
+              <span>MobileNetV2</span>
+              <span>Python</span>
+            </div>
+          </article>
+
+          <article class="module-card" id="module-climate">
+            <div class="module-icon-wrap">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="#3A86FF" opacity=".1"/><path d="M8 24l4-6 4 3 4-8 4 5" stroke="#3A86FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span class="module-tag module-tag-blue">Engine 02</span>
+            <h3>Climate Risk Monitoring</h3>
+            <p>Continuous analysis of rainfall patterns, soil moisture, and temperature anomalies. 10-year rolling baselines identify deviation and trigger risk escalation protocols automatically.</p>
+            <ul class="module-list">
+              <li>Rolling rainfall averages</li>
+              <li>Deficit & surplus detection</li>
+              <li>Multi-region scoring</li>
+              <li>Climate trend forecasting</li>
+            </ul>
+            <div class="module-tech-chips">
+              <span>Pandas</span>
+              <span>NumPy</span>
+              <span>FastAPI</span>
+            </div>
+          </article>
+
+          <article class="module-card" id="module-payout">
+            <div class="module-icon-wrap">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="#E67E22" opacity=".1"/><path d="M16 8l8 8-8 8-8-8 8-8z" stroke="#E67E22" stroke-width="2" stroke-linejoin="round"/></svg>
+            </div>
+            <span class="module-tag module-tag-orange">Engine 03</span>
+            <h3>Autonomous Payout Agent</h3>
+            <p>When parametric thresholds are breached, the system autonomously validates events, computes payout amounts, generates JSON audit logs, and simulates API disbursement — zero human intervention.</p>
+            <ul class="module-list">
+              <li>Threshold detection engine</li>
+              <li>JSON audit logging</li>
+              <li>API payout simulation</li>
+              <li>Admin monitoring panel</li>
+            </ul>
+            <div class="module-tech-chips">
+              <span>FastAPI</span>
+              <span>Parametric Logic</span>
+              <span>JSON</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ INTERACTIVE DASHBOARD SECTION ═══════════ -->
+    <section class="section-dashboard-preview" id="technology">
+      <div class="container">
+        <div class="section-center-header">
+          <span class="section-badge">Live Dashboard</span>
+          <h2 class="section-heading">Your agricultural command center.</h2>
+          <p class="section-sub">A premium SaaS dashboard for real-time monitoring, risk analytics, and insurance automation.</p>
+        </div>
+        <div class="dashboard-mockup">
+          <div class="dm-sidebar">
+            <div class="dm-brand">
+              <span class="dm-logo">A</span>
+              <span>AgriShield</span>
+            </div>
+            <div class="dm-nav">
+              <a class="dm-link dm-active"><span>📊</span> Dashboard</a>
+              <a class="dm-link"><span>🌾</span> Crop Detection</a>
+              <a class="dm-link"><span>📈</span> Risk Analytics</a>
+              <a class="dm-link"><span>🛡️</span> Insurance</a>
+              <a class="dm-link"><span>📋</span> Admin Logs</a>
+              <a class="dm-link"><span>⚙️</span> Settings</a>
+            </div>
+          </div>
+          <div class="dm-main">
+            <div class="dm-topbar">
+              <div>
+                <h3>Field Risk Overview</h3>
+                <p>Today's snapshot across active regions</p>
+              </div>
+              <div class="dm-topbar-right">
+                <div class="dm-search">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="5" stroke="#6b7a89" stroke-width="1.2"/><line x1="10" y1="10" x2="13" y2="13" stroke="#6b7a89" stroke-width="1.2" stroke-linecap="round"/></svg>
+                  <span>Search fields, policies...</span>
+                </div>
+                <div class="dm-avatar">MF</div>
+              </div>
+            </div>
+            <div class="dm-content-grid">
+              <!-- Risk Gauge -->
+              <div class="dm-card dm-card-gauge">
+                <div class="dm-card-head">
+                  <h4>Risk Score</h4>
+                  <span class="dm-badge">Live</span>
+                </div>
+                <div class="dm-gauge-wrap">
+                  <canvas id="miniGauge" width="120" height="120"></canvas>
+                  <span class="dm-gauge-label">Moderate</span>
+                </div>
+              </div>
+              <!-- Rainfall Chart -->
+              <div class="dm-card dm-card-chart">
+                <div class="dm-card-head">
+                  <h4>Rainfall Trend — June</h4>
+                  <span class="dm-badge dm-badge-blue">10-Day</span>
+                </div>
+                <canvas id="miniRainChart" width="320" height="100"></canvas>
+              </div>
+              <!-- Disease Card -->
+              <div class="dm-card dm-card-disease">
+                <div class="dm-card-head">
+                  <h4>Latest Detection</h4>
+                </div>
+                <div class="dm-disease-result">
+                  <div class="dm-disease-img">
+                    <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=200&q=70" alt="Crop leaf"/>
+                  </div>
+                  <div class="dm-disease-info">
+                    <span class="dm-disease-name">Tomato — Late Blight</span>
+                    <div class="dm-disease-bar"><div style="width:94%"></div></div>
+                    <span class="dm-disease-conf">94.2% confidence</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Payout Table -->
+              <div class="dm-card dm-card-table">
+                <div class="dm-card-head">
+                  <h4>Recent Payouts</h4>
+                </div>
+                <table class="dm-table">
+                  <thead><tr><th>Field</th><th>Amount</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>Delta-19A</td><td class="dm-mono">₹24,500</td><td><span class="dm-status dm-status-done">Processed</span></td></tr>
+                    <tr><td>Valley-07C</td><td class="dm-mono">₹18,200</td><td><span class="dm-status dm-status-pending">Pending</span></td></tr>
+                    <tr><td>Plain-12B</td><td class="dm-mono">₹31,000</td><td><span class="dm-status dm-status-done">Processed</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Alert Feed -->
+              <div class="dm-card dm-card-alerts">
+                <div class="dm-card-head">
+                  <h4>Alert Feed</h4>
+                </div>
+                <div class="dm-alert-list">
+                  <div class="dm-alert dm-alert-high">
+                    <span class="dm-alert-dot"></span>
+                    <div>
+                      <strong>Leaf blight cluster</strong> detected in Delta-19A
+                      <span class="dm-alert-time">12 min ago</span>
+                    </div>
+                  </div>
+                  <div class="dm-alert dm-alert-medium">
+                    <span class="dm-alert-dot"></span>
+                    <div>
+                      <strong>Rainfall deficit</strong> warning — Valley Region
+                      <span class="dm-alert-time">1 hr ago</span>
+                    </div>
+                  </div>
+                  <div class="dm-alert dm-alert-low">
+                    <span class="dm-alert-dot"></span>
+                    <div>
+                      <strong>Payout auto-processed</strong> for Plain-12B
+                      <span class="dm-alert-time">3 hrs ago</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-cta-row">
+          <a href="dashboard.html" class="btn-primary-lg">Open Full Dashboard</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ WHY AGRISHIELD ═══════════ -->
+    <section class="section-why" id="docs">
+      <div class="container">
+        <div class="section-center-header">
+          <span class="section-badge">Why AgriShield</span>
+          <h2 class="section-heading">Built for scale. Designed for impact.</h2>
+        </div>
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#1F7A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h4>AI-Powered Early Detection</h4>
+            <p>MobileNetV2 transfer learning identifies 16 disease classes before visible symptoms appear.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#1F7A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h4>Parametric Insurance Model</h4>
+            <p>Rule-based triggers tied to rainfall indices and climate data — no manual claims needed.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#1F7A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h4>Autonomous Financial Workflow</h4>
+            <p>End-to-end payout processing with zero human intervention and full JSON audit trail.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#1F7A5A" stroke-width="1.5"/><line x1="8" y1="21" x2="16" y2="21" stroke="#1F7A5A" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="17" x2="12" y2="21" stroke="#1F7A5A" stroke-width="1.5"/></svg>
+            </div>
+            <h4>API-First Architecture</h4>
+            <p>FastAPI-powered backend with RESTful endpoints for seamless integration into existing systems.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" stroke="#1F7A5A" stroke-width="1.5"/></svg>
+            </div>
+            <h4>Scalable SaaS Infrastructure</h4>
+            <p>Cloud-native deployment ready. Handle thousands of concurrent field analyses effortlessly.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#1F7A5A" stroke-width="1.5"/><path d="M8 12l3 3 5-5" stroke="#1F7A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h4>Production-Ready ML Pipeline</h4>
+            <p>TensorFlow transfer learning with validated accuracy across 2.4M labeled field images.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ TESTIMONIALS ═══════════ -->
+    <section class="section-testimonials">
+      <div class="container">
+        <div class="section-center-header">
+          <span class="section-badge">What Leaders Say</span>
+          <h2 class="section-heading">Trusted by the future of farming.</h2>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="testimonial-quote">"AgriShield AI represents the future of climate-resilient farming. The autonomous payout system alone saves us weeks of manual processing."</div>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar" style="background:#1F7A5A;">DP</div>
+              <div>
+                <strong>Dr. Priya Sharma</strong>
+                <span>Head of AgriTech, National Agriculture Board</span>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-quote">"The precision of their disease detection model is remarkable. 98.4% accuracy across our test plots — this is enterprise-grade ML for agriculture."</div>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar" style="background:#0F3D2E;">RK</div>
+              <div>
+                <strong>Rahul Krishnamurthy</strong>
+                <span>CTO, FarmScale Technologies</span>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-quote">"We've reduced insurance claim processing time by 72%. The parametric model eliminates disputes and builds trust with farming communities."</div>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar" style="background:#E67E22;">AM</div>
+              <div>
+                <strong>Anita Mehta</strong>
+                <span>VP Insurance Products, AgroCover India</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ VISUAL ECOSYSTEM ═══════════ -->
+    <section class="section-visuals">
+      <div class="container">
+        <div class="section-center-header">
+          <span class="section-badge">Visual Intelligence</span>
+          <h2 class="section-heading">See the ecosystem in action.</h2>
+        </div>
+        <div class="visuals-grid">
+          <div class="visual-card visual-card-lg">
+            <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=700&q=80" alt="Aerial farmland view" loading="lazy"/>
+            <div class="visual-overlay">
+              <span class="visual-tag">Satellite Monitoring</span>
+              <span>Real-time aerial crop health analysis</span>
+            </div>
+          </div>
+          <div class="visual-card">
+            <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=400&q=80" alt="Crop closeup" loading="lazy"/>
+            <div class="visual-overlay">
+              <span class="visual-tag">Disease Detection</span>
+              <span>AI-powered leaf analysis</span>
+            </div>
+          </div>
+          <div class="visual-card">
+            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&q=80" alt="Golden wheat field" loading="lazy"/>
+            <div class="visual-overlay">
+              <span class="visual-tag">Risk Heatmap</span>
+              <span>Climate risk overlay zones</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ TRUST TECH STRIP ═══════════ -->
+    <section class="section-tech-strip">
+      <div class="container tech-strip-inner">
+        <div class="tech-item">
+          <span class="tech-icon">⚡</span>
+          <span>FastAPI Powered Backend</span>
+        </div>
+        <div class="tech-item">
+          <span class="tech-icon">🧠</span>
+          <span>TensorFlow Transfer Learning</span>
+        </div>
+        <div class="tech-item">
+          <span class="tech-icon">🛡️</span>
+          <span>Parametric Insurance Logic</span>
+        </div>
+        <div class="tech-item">
+          <span class="tech-icon">📊</span>
+          <span>41K+ Training Dataset</span>
+        </div>
+        <div class="tech-item">
+          <span class="tech-icon">✅</span>
+          <span>98.4% Accuracy</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ CTA SECTION ═══════════ -->
+    <section class="section-cta" id="demo">
+      <div class="cta-bg"></div>
+      <div class="container cta-content">
+        <h2 class="cta-heading">Build the Future of<br/>Agricultural Protection.</h2>
+        <p class="cta-subtitle">Join enterprises using AgriShield AI to protect millions of acres with autonomous intelligence.</p>
+        <div class="cta-form-row">
+          <input type="email" placeholder="Enter your work email" class="cta-email" id="ctaEmail"/>
+          <button class="btn-primary-lg" id="ctaSubmit">
+            <span>Request Enterprise Demo</span>
+            <span class="btn-arrow-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </button>
+        </div>
+        <p class="cta-footnote">No credit card required. Enterprise onboarding within 48 hours.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-row">
+          <span class="nav-brand-icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+              <rect width="28" height="28" rx="8" fill="url(#brandG2)"/>
+              <path d="M8 20L14 8l6 12H8z" fill="#fff" opacity=".9"/>
+              <defs><linearGradient id="brandG2" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#1F7A5A"/><stop offset="1" stop-color="#0F3D2E"/></linearGradient></defs>
+            </svg>
+          </span>
+          <span class="footer-brand-name">AgriShield<span class="brand-ai">AI</span></span>
+        </div>
+        <p class="footer-tagline">Transforming Agriculture Through Intelligence.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Twitter" class="social-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#" aria-label="LinkedIn" class="social-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 100-4 2 2 0 000 4z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#" aria-label="GitHub" class="social-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="#">About</a>
+        <a href="#">Careers</a>
+        <a href="#">Blog</a>
+        <a href="#">Press</a>
+      </div>
+      <div class="footer-col">
+        <h5>Platform</h5>
+        <a href="#">Crop Engine</a>
+        <a href="#">Climate Risk</a>
+        <a href="#">Insurance</a>
+        <a href="dashboard.html">Dashboard</a>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <a href="#">API Docs</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span id="footerYear"></span> Fieldbound Technologies. All rights reserved.</span>
+      <span>Built with ❤️ for farmers everywhere.</span>
+    </div>
+  </footer>
+
+  <!-- Sticky CTA -->
+  <div class="sticky-cta" id="stickyCta">
+    <a href="#demo" class="btn-primary-lg btn-sticky">Request Demo</a>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

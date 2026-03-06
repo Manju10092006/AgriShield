@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>AgriShield AI — Crop Intelligence Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+    content="AgriShield AI Dashboard — Upload crop images, detect diseases with ML, get AI advisory, plant knowledge, and manage agricultural risk." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard-premium.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body class="dashboard-body">
+  <div class="app-shell">
+    <!-- ════════════ SIDEBAR ════════════ -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <a href="index.html" class="brand brand-sidebar">
+          <span class="brand-logo">A</span>
+          <span class="brand-name">AgriShield<span style="color:#A7F3D0;">AI</span></span>
+        </a>
+        <button class="sidebar-expand-btn" id="sidebarExpandBtn" aria-label="Expand sidebar" title="Expand sidebar">☰</button>
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+          <span></span><span></span>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link active" data-page="dashboard">
+          <span class="sidebar-icon">🏠</span><span class="sidebar-label">Dashboard</span>
+        </a>
+        <a href="#" class="sidebar-link" data-page="crop">
+          <span class="sidebar-icon">�</span><span class="sidebar-label">Crop Detection</span>
+        </a>
+        <a href="#" class="sidebar-link" data-page="plant">
+          <span class="sidebar-icon">�</span><span class="sidebar-label">Plant Intelligence</span>
+        </a>
+        <a href="#" class="sidebar-link" data-page="treatment">
+          <span class="sidebar-icon">💊</span><span class="sidebar-label">Treatment & Advisory</span>
+        </a>
+        <a href="#" class="sidebar-link" data-page="risk">
+          <span class="sidebar-icon">⚠️</span><span class="sidebar-label">Risk Monitor</span>
+        </a>
+        <a href="#" class="sidebar-link" data-page="weather">
+          <span class="sidebar-icon">🌧️</span><span class="sidebar-label">Weather Intelligence</span>
+        </a>
+        <a href="#" class="sidebar-link" data-page="insurance">
+          <span class="sidebar-icon">�️</span><span class="sidebar-label">Insurance Automation</span>
+        </a>
+        <a href="#" class="sidebar-link" data-page="analytics">
+          <span class="sidebar-icon">�</span><span class="sidebar-label">Analytics</span>
+        </a>
+        <a href="#" class="sidebar-link" data-page="settings">
+          <span class="sidebar-icon">⚙️</span><span class="sidebar-label">Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="sidebar-foot-card">
+          <p>June rainfall anomaly at <span class="accent">+12%</span>. Review exposure before next policy cycle.</p>
+          <button class="btn-ghost-soft btn-small">Open exposure view</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ════════════ MAIN ════════════ -->
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <p class="topbar-greeting" data-i18n="greeting">Welcome back, Mia 👋</p>
+          <h1 data-i18n="title_overview">Dashboard</h1>
+          <p class="topbar-subtitle" data-i18n="subtitle_overview">Optimize your farm operations and track insights.</p>
+        </div>
+        <div class="topbar-right">
+          <div class="lang-select-wrap">
+            <select id="langSelect" class="tiny-select">
+              <option value="en">English</option>
+              <option value="hi">हिन्दी</option>
+              <option value="te">తెలుగు</option>
+              <option value="ta">தமிழ்</option>
+              <option value="kn">ಕನ್ನಡ</option>
+              <option value="ml">മലയാളം</option>
+              <option value="mr">मराठी</option>
+              <option value="gu">ગુજરાતી</option>
+              <option value="pa">ਪੰਜਾਬੀ</option>
+              <option value="bn">বাংলা</option>
+              <option value="or">ଓଡ଼ିଆ</option>
+              <option value="ur">اردو</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+              <option value="de">Deutsch</option>
+              <option value="ja">日本語</option>
+              <option value="zh">中文</option>
+              <option value="ar">العربية</option>
+            </select>
+          </div>
+          <div class="topbar-search">
+            <input type="search" placeholder="Search fields, farmers, or policies"
+              data-i18n-placeholder="search_placeholder" />
+          </div>
+          <button class="topbar-icon-btn" aria-label="Notifications">
+            <span class="dot-alert"></span>🔔
+          </button>
+          <div class="topbar-profile">
+            <div class="avatar">MF</div>
+            <div class="profile-meta">
+              <span class="profile-name">Mia Farmer</span>
+              <span class="profile-role" data-i18n="role_title">Regional Agronomist</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="content">
+
+        <!-- ╔══════════════════════════════════════════════╗
+             ║  PAGE: DASHBOARD (Overview)                  ║
+             ╚══════════════════════════════════════════════╝ -->
+        <div class="page-section active" data-page="dashboard">
+
+          <!-- ── Stats Row ── -->
+          <div class="dash-stats-row">
+            <div class="dash-stat-card">
+              <div class="dash-stat-icon" style="background:rgba(27,158,86,0.1);color:#1B9E56;">🌡️</div>
+              <div class="dash-stat-info">
+                <span class="dash-stat-value" id="dashTemp">24 °C</span>
+                <span class="dash-stat-label">Temperature</span>
+              </div>
+              <span class="dash-stat-badge dash-stat-up">☁️ Cloudy</span>
+            </div>
+            <div class="dash-stat-card">
+              <div class="dash-stat-icon" style="background:rgba(246,153,63,0.1);color:#F6993F;">🌾</div>
+              <div class="dash-stat-info">
+                <span class="dash-stat-value">1,200</span>
+                <span class="dash-stat-label">Total Acres</span>
+              </div>
+              <span class="dash-stat-badge dash-stat-up">+3.2%</span>
+            </div>
+            <div class="dash-stat-card">
+              <div class="dash-stat-icon" style="background:rgba(66,153,225,0.1);color:#4299E1;">💰</div>
+              <div class="dash-stat-info">
+                <span class="dash-stat-value">₹50,000</span>
+                <span class="dash-stat-label">Revenue</span>
+              </div>
+              <span class="dash-stat-badge dash-stat-up">+12%</span>
+            </div>
+            <div class="dash-stat-card">
+              <div class="dash-stat-icon" style="background:rgba(252,92,101,0.1);color:#FC5C65;">⚠️</div>
+              <div class="dash-stat-info">
+                <span class="dash-stat-value">3</span>
+                <span class="dash-stat-label">Active Alerts</span>
+              </div>
+              <span class="dash-stat-badge dash-stat-down">High</span>
+            </div>
+          </div>
+
+          <!-- ── Production Overview + Composite Risk ── -->
+          <section class="grid grid-12 gap-lg" style="margin-top:20px;">
+            <article class="card col-span-5">
+              <header class="card-header">
+                <div>
+                  <h2>🌾 Production Overview</h2>
+                  <p class="card-subtitle">Crop yield distribution across active fields.</p>
+                </div>
+              </header>
+              <div class="production-gauge-wrap">
+                <svg viewBox="0 0 120 120" class="confidence-svg">
+                  <defs>
+                    <linearGradient id="prodGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#1F7A5A" />
+                      <stop offset="100%" stop-color="#4FB286" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="#E5ECE9" stroke-width="10"></circle>
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="url(#prodGrad)" stroke-width="10"
+                    stroke-linecap="round" stroke-dasharray="260 326" transform="rotate(-90 60 60)"></circle>
+                </svg>
+                <div class="confidence-value">
+                  <span style="font-size:22px;font-weight:800;color:var(--text-heading);">1,000</span>
+                  <span style="font-size:11px;color:var(--text-muted-g);">tons harvested</span>
+                </div>
+              </div>
+              <div class="production-legend">
+                <span class="legend-item"><span class="legend-dot" style="background:#1B9E56;"></span> Wheat 45%</span>
+                <span class="legend-item"><span class="legend-dot" style="background:#F6993F;"></span> Corn 30%</span>
+                <span class="legend-item"><span class="legend-dot" style="background:#4299E1;"></span> Rice 25%</span>
+              </div>
+            </article>
+
+            <article class="card col-span-7" id="riskScoreCard">
+              <header class="card-header">
+                <div>
+                  <h2>📈 Composite Risk Score</h2>
+                  <p class="card-subtitle" id="riskSubtitle">Seven-day risk trend across monitored fields.</p>
+                </div>
+                <div class="chip chip-soft" id="riskChip">Live</div>
+              </header>
+              <div class="chart-wrapper" id="riskChartWrap">
+                <canvas id="riskChart" width="500" height="200"></canvas>
+              </div>
+              <div class="confidence-display" id="confidenceDisplay" style="display:none;">
+                <div class="confidence-gauge-wrap">
+                  <svg viewBox="0 0 120 120" class="confidence-svg">
+                    <defs>
+                      <linearGradient id="confGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#1F7A5A" />
+                        <stop offset="100%" stop-color="#4FB286" />
+                      </linearGradient>
+                    </defs>
+                    <circle cx="60" cy="60" r="52" fill="none" stroke="#E5ECE9" stroke-width="8"></circle>
+                    <circle id="confArc" cx="60" cy="60" r="52" fill="none" stroke="url(#confGrad)" stroke-width="8"
+                      stroke-linecap="round" stroke-dasharray="0 326" transform="rotate(-90 60 60)"></circle>
+                  </svg>
+                  <div class="confidence-value">
+                    <span id="confPercent">0%</span>
+                    <span>Confidence</span>
+                  </div>
+                </div>
+                <div class="confidence-details">
+                  <div class="conf-detail-row"><span>Predicted Disease</span><strong id="confDisease">—</strong></div>
+                  <div class="conf-detail-row"><span>Risk Level</span><span class="risk-badge" id="confRiskBadge">—</span></div>
+                </div>
+              </div>
+              <div class="chart-legend" id="chartLegend">
+                <span class="legend-item"><span class="legend-dot legend-risk"></span> Disease probability</span>
+                <span class="legend-item"><span class="legend-dot legend-weather"></span> Weather stress</span>
+              </div>
+            </article>
+          </section>
+
+          <!-- ── Task Management + Harvest Summary ── -->
+          <section class="grid grid-12 gap-lg" style="margin-top:20px;">
+            <article class="card col-span-7">
+              <header class="card-header">
+                <div>
+                  <h2>📋 Task Management</h2>
+                  <p class="card-subtitle">Active field operations and upcoming tasks.</p>
+                </div>
+                <button class="btn-primary btn-small">+ Add New Task</button>
+              </header>
+              <div class="table-wrapper">
+                <table class="table">
+                  <thead>
+                    <tr><th>Task Name</th><th>Assigned To</th><th>Due Date</th><th>Status</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Apply Fertilizer to Corn</td><td>Jane Smith</td><td>28 Aug, 25</td><td><span class="risk-badge low">Pending</span></td></tr>
+                    <tr><td>Harvest Wheat</td><td>Tom Richards</td><td>Sep 05</td><td><span class="risk-badge medium">In Progress</span></td></tr>
+                    <tr><td>Inspect Rice Paddies</td><td>Mia Farmer</td><td>Aug 30</td><td><span class="risk-badge high">Urgent</span></td></tr>
+                    <tr><td>Soil Testing — East Block</td><td>Lab Team</td><td>Sep 02</td><td><span class="risk-badge low">Scheduled</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="card col-span-5">
+              <header class="card-header">
+                <div>
+                  <h2>🥬 Harvest Summary</h2>
+                  <p class="card-subtitle">Current season vegetable production.</p>
+                </div>
+              </header>
+              <div class="harvest-list">
+                <div class="harvest-item"><span class="harvest-dot" style="background:#1B9E56;"></span><span class="harvest-name">Tomatoes</span><span class="harvest-val">150 tons</span></div>
+                <div class="harvest-item"><span class="harvest-dot" style="background:#4299E1;"></span><span class="harvest-name">Potatoes</span><span class="harvest-val">120 tons</span></div>
+                <div class="harvest-item"><span class="harvest-dot" style="background:#F6993F;"></span><span class="harvest-name">Carrots</span><span class="harvest-val">80 tons</span></div>
+                <div class="harvest-item"><span class="harvest-dot" style="background:#9F7AEA;"></span><span class="harvest-name">Spinach</span><span class="harvest-val">60 tons</span></div>
+                <div class="harvest-item"><span class="harvest-dot" style="background:#FC5C65;"></span><span class="harvest-name">Peppers</span><span class="harvest-val">45 tons</span></div>
+              </div>
+            </article>
+          </section>
+        </div>
+
+        <!-- ╔══════════════════════════════════════════════╗
+             ║  PAGE: CROP DETECTION                        ║
+             ╚══════════════════════════════════════════════╝ -->
+        <div class="page-section" data-page="crop">
+          <section class="grid grid-12 gap-lg">
+            <article class="card col-span-6" id="uploadCard">
+              <header class="card-header">
+                <div>
+                  <h2 data-i18n="crop_upload">🔬 Crop Imagery Upload</h2>
+                  <p class="card-subtitle">Drop leaf or drone images to detect diseases.</p>
+                </div>
+              </header>
+              <div class="upload-zone" id="uploadZone">
+                <input type="file" id="fileInput" accept="image/png,image/jpeg,image/jpg" />
+                <div class="upload-inner" id="uploadInner">
+                  <div class="upload-icon">📤</div>
+                  <p class="upload-title">Drag & drop files here</p>
+                  <p class="upload-subtitle">or click to browse imagery folders</p>
+                  <p class="upload-hint">JPEG, PNG up to 10 MB</p>
+                </div>
+                <div class="upload-preview" id="uploadPreview" style="display:none;">
+                  <img id="previewImage" alt="Crop preview" />
+                  <div class="preview-meta">
+                    <span class="preview-name" id="previewName"></span>
+                    <span class="preview-size" id="previewSize"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="upload-actions" id="uploadActions" style="display:none;">
+                <button class="btn-primary btn-small" id="analyzeBtn" disabled data-i18n="analyze_crop">🔬 Analyze Crop</button>
+                <button class="btn-ghost-soft btn-small" id="clearBtn" data-i18n="clear">✕ Clear</button>
+              </div>
+              <div class="upload-loading" id="uploadLoading" style="display:none;">
+                <div class="upload-spinner"></div>
+                <p>Analyzing crop disease…</p>
+                <div class="upload-progress-bar"><div class="upload-progress-fill" id="progressFill"></div></div>
+              </div>
+              <div class="upload-error" id="uploadError" style="display:none;">
+                <p>⚠️ <span id="errorMessage">Prediction service unavailable. Please try again.</span></p>
+                <button class="btn-ghost-soft btn-small" id="retryBtn">Retry</button>
+              </div>
+            </article>
+
+            <div class="col-span-6" style="display:flex;flex-direction:column;gap:16px;">
+              <article class="card card-health" id="plantHealthCard" style="display:none;">
+                <header class="card-header"><div><h2 data-i18n="plant_health_status">🌱 Plant Health Status</h2><p class="card-subtitle">Diagnosis from uploaded crop image.</p></div></header>
+                <div class="plant-health-body" id="plantHealthBody">
+                  <div class="health-indicator" id="healthIndicator"><span class="health-icon" id="healthIcon">✅</span><span class="health-label" id="healthLabel">Healthy</span></div>
+                  <p class="health-explanation" id="healthExplanation">Upload a crop image to check plant health status.</p>
+                </div>
+              </article>
+              <article class="card" id="topPredCard" style="display:none;">
+                <header class="card-header"><div><h2 data-i18n="top_predictions">🎯 Top 3 Predictions</h2><p class="card-subtitle">Most probable classifications.</p></div></header>
+                <div class="top3-list" id="top3List"></div>
+              </article>
+              <article class="card" id="severityCard" style="display:none;">
+                <header class="card-header"><div><h2 data-i18n="disease_severity">📊 Disease Severity</h2><p class="card-subtitle">AI-powered severity classification.</p></div></header>
+                <div class="severity-display">
+                  <div class="severity-level-badge" id="severityBadge"><span class="severity-level-icon" id="severityIcon">🟢</span><span class="severity-level-text" id="severityText">LOW</span></div>
+                  <p class="severity-explanation" id="severityExplanation">Upload a crop image to assess disease severity.</p>
+                </div>
+                <div class="severity-gauge-wrap"><div class="severity-bar-track"><div class="severity-bar-fill" id="severityFill"></div></div><div class="severity-labels"><span>Low</span><span>Moderate</span><span>High</span><span>Critical</span></div></div>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <!-- ╔══════════════════════════════════════════════╗
+             ║  PAGE: PLANT INTELLIGENCE                    ║
+             ╚══════════════════════════════════════════════╝ -->
+        <div class="page-section" data-page="plant">
+          <section class="grid grid-12 gap-lg">
+            <article class="card col-span-4" id="plantProfileCard" style="display:none;">
+              <header class="card-header"><div><h2 data-i18n="plant_profile">🌿 Plant Profile</h2><p class="card-subtitle">Scientific classification & details.</p></div></header>
+              <div class="plant-profile-body" id="plantProfileBody">
+                <div class="profile-field"><span class="pf-label">Plant Name</span><strong class="pf-value" id="pfName">—</strong></div>
+                <div class="profile-field"><span class="pf-label">Scientific Name</span><span class="pf-value pf-italic" id="pfSciName">—</span></div>
+                <div class="profile-field"><span class="pf-label">Common Names</span><span class="pf-value" id="pfCommon">—</span></div>
+                <div class="profile-field"><span class="pf-label">Genus</span><span class="pf-value pf-italic" id="pfGenus">—</span></div>
+                <div class="profile-field"><span class="pf-label">Family</span><span class="pf-value" id="pfFamily">—</span></div>
+                <div class="profile-field"><span class="pf-label">Order</span><span class="pf-value" id="pfOrder">—</span></div>
+                <div class="profile-field"><span class="pf-label">Class</span><span class="pf-value" id="pfClass">—</span></div>
+              </div>
+            </article>
+            <article class="card col-span-4" id="envCard" style="display:none;">
+              <header class="card-header"><div><h2 data-i18n="environment_conditions">🌡️ Environment Conditions</h2><p class="card-subtitle">Optimal crop growing requirements.</p></div></header>
+              <div class="env-body" id="envBody">
+                <div class="env-row"><span class="env-icon">☀️</span><span class="env-label">Sunlight</span><strong class="env-value" id="envSun">—</strong></div>
+                <div class="env-row"><span class="env-icon">🌱</span><span class="env-label">Soil Type</span><strong class="env-value" id="envSoil">—</strong></div>
+                <div class="env-row"><span class="env-icon">🧪</span><span class="env-label">pH Range</span><strong class="env-value" id="envPH">—</strong></div>
+                <div class="env-row"><span class="env-icon">🌡️</span><span class="env-label">Temperature</span><strong class="env-value" id="envTemp">—</strong></div>
+                <div class="env-row"><span class="env-icon">💧</span><span class="env-label">Water Needs</span><strong class="env-value" id="envWater">—</strong></div>
+                <div class="env-row"><span class="env-icon">🪴</span><span class="env-label">Repotting</span><strong class="env-value" id="envRepot">—</strong></div>
+              </div>
+            </article>
+            <article class="card col-span-4" id="pestsCard" style="display:none;">
+              <header class="card-header"><div><h2 data-i18n="pests_and_diseases">🐛 Pests & Diseases</h2><p class="card-subtitle">Common threats for this crop.</p></div></header>
+              <div class="pests-body" id="pestsBody">
+                <div class="pest-section"><h4 class="pest-heading">Pests</h4><ul class="pest-list" id="pestList"></ul></div>
+                <div class="pest-section"><h4 class="pest-heading pest-disease">Diseases</h4><ul class="pest-list" id="diseaseList"></ul></div>
+              </div>
+            </article>
+          </section>
+          <section class="grid grid-12 gap-lg" style="margin-top:16px;">
+            <article class="card col-span-12" id="usesCard" style="display:none;">
+              <header class="card-header"><div><h2>📚 Plant Uses & Culture</h2><p class="card-subtitle">Traditional uses and cultural significance.</p></div></header>
+              <div class="uses-body" id="usesBody">
+                <div class="uses-section"><h4>Uses</h4><p id="plantUses">—</p></div>
+                <div class="uses-section"><h4>Cultural Significance</h4><p id="plantCulture">—</p></div>
+                <div class="uses-section"><h4>Similar Plants</h4><div class="similar-plants-grid" id="similarPlants"></div></div>
+              </div>
+            </article>
+          </section>
+          <div class="page-empty-state" id="plantEmptyState">
+            <div class="empty-icon">🌱</div>
+            <h3>No Plant Data Yet</h3>
+            <p>Upload and analyze a crop image in <strong>Crop Detection</strong> to see plant intelligence data here.</p>
+          </div>
+        </div>
+
+        <!-- ╔══════════════════════════════════════════════╗
+             ║  PAGE: TREATMENT & ADVISORY                  ║
+             ╚══════════════════════════════════════════════╝ -->
+        <div class="page-section" data-page="treatment">
+          <section class="grid grid-12 gap-lg">
+            <article class="card col-span-7" id="advisoryCard" style="display:none;">
+              <header class="card-header">
+                <div><h2 data-i18n="ai_crop_advisory">🤖 AI Crop Advisory</h2><p class="card-subtitle">AI-powered treatment & prevention recommendations.</p></div>
+                <div class="advisory-actions" id="advisoryActions" style="display:none;">
+                  <button class="btn-ghost-soft btn-small" id="copyAdvisoryBtn" title="Copy">📋 Copy</button>
+                  <button class="btn-ghost-soft btn-small" id="downloadAdvisoryBtn" title="Download">⬇️ Download</button>
+                </div>
+              </header>
+              <div class="advisory-placeholder" id="advisoryPlaceholder"><p>💬 AI advisory will appear here after crop analysis is complete.</p></div>
+              <div class="advisory-loading" id="advisoryLoading" style="display:none;"><div class="typing-dots"><span></span><span></span><span></span></div><p>AI is generating advisory…</p></div>
+              <div class="advisory-content" id="advisoryContent" style="display:none;"></div>
+              <div class="advisory-error" id="advisoryError" style="display:none;"><p data-i18n="advisory_unavailable">⚠️ AI advisory temporarily unavailable.</p></div>
+            </article>
+            <article class="card col-span-5" id="treatmentCard" style="display:none;">
+              <header class="card-header"><div><h2 data-i18n="treatment_plan">💊 Treatment Plan</h2><p class="card-subtitle">Structured treatment recommendations.</p></div></header>
+              <div class="treatment-body" id="treatmentBody">
+                <div class="treatment-row"><span class="treatment-icon">🚨</span><div><strong>Immediate Treatment</strong><p id="treatImmediate">—</p></div></div>
+                <div class="treatment-row"><span class="treatment-icon">🌿</span><div><strong>Organic Remedy</strong><p id="treatOrganic">—</p></div></div>
+                <div class="treatment-row"><span class="treatment-icon">🧪</span><div><strong>Chemical Treatment</strong><p id="treatChemical">—</p></div></div>
+                <div class="treatment-row"><span class="treatment-icon">🛡️</span><div><strong data-i18n="prevention">Prevention Steps</strong><p id="treatPrevention">—</p></div></div>
+                <div class="treatment-row"><span class="treatment-icon">⏱️</span><div><strong>Recovery Time</strong><p id="treatRecovery">—</p></div></div>
+              </div>
+              <div class="treatment-loading" id="treatmentLoading" style="display:none;"><div class="typing-dots"><span></span><span></span><span></span></div><p>Generating treatment plan…</p></div>
+            </article>
+          </section>
+          <section class="grid grid-12 gap-lg" style="margin-top:16px;">
+            <article class="card col-span-6" id="recoveryCard" style="display:none;">
+              <header class="card-header"><div><h2 data-i18n="recovery_time">📅 Recovery Timeline</h2><p class="card-subtitle">Estimated crop recovery period.</p></div></header>
+              <div class="recovery-body" id="recoveryBody">
+                <div class="recovery-main"><span class="recovery-timer-icon">⏳</span><div class="recovery-period"><span class="recovery-days" id="recoveryDays">— days</span><span class="recovery-label">Estimated Recovery</span></div></div>
+                <div class="recovery-timeline">
+                  <div class="timeline-step active"><span class="timeline-dot"></span><div><strong>Detection</strong><p id="timelineDetection">Disease identified by AI</p></div></div>
+                  <div class="timeline-step" id="timelineStep2"><span class="timeline-dot"></span><div><strong>Treatment Started</strong><p id="timelineTreatment">Apply recommended treatment</p></div></div>
+                  <div class="timeline-step" id="timelineStep3"><span class="timeline-dot"></span><div><strong>Recovery Expected</strong><p id="timelineRecovery">Full recovery within estimated period</p></div></div>
+                </div>
+              </div>
+            </article>
+            <article class="card col-span-6" id="fertilizerCard" style="display:none;">
+              <header class="card-header"><div><h2 data-i18n="fertilizer_title">🌾 Fertilizer Recommendations</h2><p class="card-subtitle" data-i18n="fertilizer_subtitle">Nutrient management for this crop.</p></div></header>
+              <div class="fertilizer-body" id="fertilizerBody">
+                <div class="fert-row"><span class="fert-icon">🧴</span><div><span class="fert-label">Recommended Fertilizer</span><strong class="fert-value" id="fertName">—</strong></div></div>
+                <div class="fert-row"><span class="fert-icon">⚗️</span><div><span class="fert-label">NPK Ratio</span><strong class="fert-value" id="fertNPK">—</strong></div></div>
+                <div class="fert-row"><span class="fert-icon">💧</span><div><span class="fert-label">Application Method</span><strong class="fert-value" id="fertMethod">—</strong></div></div>
+                <div class="fert-row"><span class="fert-icon">📆</span><div><span class="fert-label">Frequency</span><strong class="fert-value" id="fertFrequency">—</strong></div></div>
+                <div class="fert-row" id="fertRecoveryRow" style="display:none;"><span class="fert-icon">💪</span><div><span class="fert-label">Disease Recovery Help</span><p class="fert-value fert-recovery-text" id="fertRecoveryHelp" style="display:none;">—</p></div></div>
+              </div>
+              <div class="fertilizer-loading" id="fertilizerLoading" style="display:none;"><div class="typing-dots"><span></span><span></span><span></span></div><p>Generating fertilizer plan…</p></div>
+            </article>
+          </section>
+          <div class="page-empty-state" id="treatmentEmptyState">
+            <div class="empty-icon">💊</div>
+            <h3>No Treatment Data Yet</h3>
+            <p>Upload and analyze a crop image in <strong>Crop Detection</strong> to generate treatment recommendations.</p>
+          </div>
+        </div>
+
+        <!-- ╔══════════════════════════════════════════════╗
+             ║  PAGE: RISK MONITOR                          ║
+             ╚══════════════════════════════════════════════╝ -->
+        <div class="page-section" data-page="risk">
+          <section class="grid grid-12 gap-lg">
+            <article class="card col-span-6" id="cropRiskForecastCard" style="display:flex;">
+              <header class="card-header"><div><h2>🌤️ AI Crop Risk Forecast</h2><p class="card-subtitle">7-day disease risk prediction based on weather data.</p></div><div class="chip chip-soft">AI</div></header>
+              <div class="forecast-body" id="forecastBody"><p class="forecast-loading-text">Loading forecast...</p></div>
+              <div class="forecast-explanation" id="forecastExplanation" style="display:none;"></div>
+            </article>
+            <article class="card col-span-6">
+              <header class="card-header"><div><h2>⚠️ Field Risk Highlights</h2><p class="card-subtitle">Highest attention plots — next 72 hours.</p></div></header>
+              <div class="table-wrapper">
+                <table class="table" id="fieldRiskTable">
+                  <thead><tr><th>Field</th><th>Crop</th><th>Risk</th><th>Trigger</th></tr></thead>
+                  <tbody id="fieldRiskBody">
+                    <tr><td>Delta-19A</td><td>Rice</td><td><span class="risk-badge high">0.86</span></td><td>Leaf blight</td></tr>
+                    <tr><td>Valley-07C</td><td>Wheat</td><td><span class="risk-badge medium">0.63</span></td><td>Rainfall deficit</td></tr>
+                    <tr><td>Plain-12B</td><td>Corn</td><td><span class="risk-badge high">0.81</span></td><td>Heat spike</td></tr>
+                    <tr><td>Orchard-03D</td><td>Citrus</td><td><span class="risk-badge low">0.37</span></td><td>Storm warning</td></tr>
+                    <tr><td>Terrace-06E</td><td>Tomato</td><td><span class="risk-badge high">0.89</span></td><td>Late blight</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+        </div>
+
+        <!-- ╔══════════════════════════════════════════════╗
+             ║  PAGE: WEATHER INTELLIGENCE                  ║
+             ╚══════════════════════════════════════════════╝ -->
+        <div class="page-section" data-page="weather">
+          <section class="grid grid-12 gap-lg">
+            <article class="card col-span-6" id="rainfallIntelCard" style="display:flex;">
+              <header class="card-header"><div><h2>🌧️ Rainfall Intelligence</h2><p class="card-subtitle">Anomaly detection and AI advisory.</p></div></header>
+              <div class="rainfall-intel-body">
+                <div class="rainfall-stats-row">
+                  <div class="rainfall-stat"><span class="rainfall-stat-label">Anomaly</span><span class="rainfall-anomaly-value" id="rainfallAnomaly">—</span></div>
+                  <div class="rainfall-stat"><span class="rainfall-stat-label">Status</span><span class="rainfall-anomaly-msg" id="rainfallAnomalyMsg">Calculating...</span></div>
+                </div>
+                <div class="rainfall-advisory" id="rainfallAdvisory" style="display:none;"></div>
+              </div>
+            </article>
+            <article class="card col-span-6">
+              <header class="card-header">
+                <div><h2>📊 Rainfall Trend — June</h2><p class="card-subtitle">Daily rainfall vs. long-term average across key zones.</p></div>
+                <select class="tiny-select" id="rainSelect"><option>All regions</option><option>Delta North</option><option>Valley East</option><option>Highland West</option></select>
+              </header>
+              <div class="chart-wrapper"><canvas id="rainChart" width="500" height="220"></canvas></div>
+              <div class="chart-footer">
+                <span class="legend-item"><span class="legend-dot legend-actual"></span> Actual rainfall</span>
+                <span class="legend-item"><span class="legend-dot legend-baseline"></span> Historical baseline</span>
+              </div>
+            </article>
+          </section>
+        </div>
+
+        <!-- ╔══════════════════════════════════════════════╗
+             ║  PAGE: INSURANCE                             ║
+             ╚══════════════════════════════════════════════╝ -->
+        <div class="page-section" data-page="insurance">
+          <section class="grid grid-12 gap-lg">
+            <article class="card col-span-5">
+              <header class="card-header"><div><h2>🛡️ Insurance Payout Status</h2><p class="card-subtitle">Automation coverage and current cycle overview.</p></div></header>
+              <div class="payout-layout">
+                <div class="payout-meter">
+                  <div class="payout-circle">
+                    <svg viewBox="0 0 120 120">
+                      <defs><linearGradient id="meterGradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1F7A5A" /><stop offset="100%" stop-color="#4FB286" /></linearGradient></defs>
+                      <circle class="meter-bg" cx="60" cy="60" r="52"></circle>
+                      <circle class="meter-fg" cx="60" cy="60" r="52" stroke-dasharray="326" stroke-dashoffset="72"></circle>
+                    </svg>
+                    <div class="payout-value"><span>78%</span><span>Automated</span></div>
+                  </div>
+                </div>
+                <div class="payout-details">
+                  <div class="payout-row"><span>Open claims</span><span class="payout-pill">14</span></div>
+                  <div class="payout-row"><span>Avg decision time</span><span>3.2 days</span></div>
+                  <div class="payout-row"><span>Upcoming triggers</span><span>6 regions</span></div>
+                  <div class="payout-progress-group"><div class="payout-progress-label"><span>Policy cycle</span><span>72%</span></div><div class="payout-progress-bar"><span style="width:72%"></span></div></div>
+                  <button class="btn-primary btn-small" id="insuranceCheckBtn">Review payout queue</button>
+                </div>
+              </div>
+            </article>
+            <article class="card col-span-7">
+              <header class="card-header"><div><h2>📄 Policy Overview</h2><p class="card-subtitle">Active policies and coverage summary.</p></div></header>
+              <div class="table-wrapper">
+                <table class="table">
+                  <thead><tr><th>Policy ID</th><th>Region</th><th>Coverage</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>POL-2024-091</td><td>Delta North</td><td>₹2,50,000</td><td><span class="risk-badge low">Active</span></td></tr>
+                    <tr><td>POL-2024-078</td><td>Valley East</td><td>₹1,80,000</td><td><span class="risk-badge low">Active</span></td></tr>
+                    <tr><td>POL-2024-064</td><td>Highland West</td><td>₹3,20,000</td><td><span class="risk-badge medium">Review</span></td></tr>
+                    <tr><td>POL-2024-052</td><td>Plains South</td><td>₹1,50,000</td><td><span class="risk-badge high">Claim Filed</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+        </div>
+
+        <!-- ╔══════════════════════════════════════════════╗
+             ║  PAGE: ANALYTICS                             ║
+             ╚══════════════════════════════════════════════╝ -->
+        <div class="page-section" data-page="analytics">
+          <div class="page-empty-state">
+            <div class="empty-icon">📊</div>
+            <h3>Analytics Dashboard</h3>
+            <p>Crop yield analytics, seasonal trends, and prediction accuracy reports will appear here. Upload and analyze crops to generate analytics data.</p>
+          </div>
+        </div>
+
+        <!-- ╔══════════════════════════════════════════════╗
+             ║  PAGE: SETTINGS                              ║
+             ╚══════════════════════════════════════════════╝ -->
+        <div class="page-section" data-page="settings">
+          <section class="grid grid-12 gap-lg">
+            <article class="card col-span-6">
+              <header class="card-header"><div><h2>👤 Profile Settings</h2><p class="card-subtitle">Manage your account and preferences.</p></div></header>
+              <div class="settings-form">
+                <div class="settings-row"><label class="settings-label">Full Name</label><input type="text" class="settings-input" value="Mia Farmer" /></div>
+                <div class="settings-row"><label class="settings-label">Email</label><input type="email" class="settings-input" value="mia@agrishield.ai" /></div>
+                <div class="settings-row"><label class="settings-label">Role</label><input type="text" class="settings-input" value="Regional Agronomist" readonly /></div>
+                <div class="settings-row"><label class="settings-label">Region</label><input type="text" class="settings-input" value="Delta North, Valley East" /></div>
+                <button class="btn-primary btn-small" style="margin-top:12px;">Save Changes</button>
+              </div>
+            </article>
+            <article class="card col-span-6">
+              <header class="card-header"><div><h2>🌐 Language & Notifications</h2><p class="card-subtitle">Choose your preferred language and alert settings.</p></div></header>
+              <div class="settings-form">
+                <div class="settings-row">
+                  <label class="settings-label">Display Language</label>
+                  <select class="settings-input tiny-select" id="settingsLangSelect">
+                    <option value="en">English</option><option value="hi">हिन्दी</option><option value="te">తెలుగు</option>
+                    <option value="ta">தமிழ்</option><option value="kn">ಕನ್ನಡ</option><option value="ml">മലയാളം</option>
+                    <option value="mr">मराठी</option><option value="gu">ગુજરાતી</option><option value="pa">ਪੰਜਾਬੀ</option>
+                    <option value="bn">বাংলা</option><option value="or">ଓଡ଼ିଆ</option><option value="ur">اردو</option>
+                    <option value="es">Español</option><option value="fr">Français</option><option value="de">Deutsch</option>
+                    <option value="ja">日本語</option><option value="zh">中文</option><option value="ar">العربية</option>
+                  </select>
+                </div>
+                <div class="settings-row"><label class="settings-label">Email Notifications</label><label class="settings-toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label></div>
+                <div class="settings-row"><label class="settings-label">Push Alerts</label><label class="settings-toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label></div>
+                <div class="settings-row"><label class="settings-label">Weekly Reports</label><label class="settings-toggle"><input type="checkbox" /><span class="toggle-slider"></span></label></div>
+              </div>
+            </article>
+          </section>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- ════════════ AI CHAT WIDGET ════════════ -->
+    <div class="chat-widget" id="chatWidget">
+      <button class="chat-toggle" id="chatToggle" aria-label="AI chat">
+        <span class="chat-toggle-dot"></span>
+        <span class="chat-toggle-icon">💬</span>
+      </button>
+      <div class="chat-panel">
+        <header class="chat-header">
+          <p class="chat-title" data-i18n="chatbot_assistant">AgriShield Assistant</p>
+          <button type="button" id="voiceToggle" class="chat-voice-toggle" aria-label="Toggle voice">🔊</button>
+          <p class="chat-subtitle" id="chatContext" data-i18n="chat_context">Ask about fields, farmers, and policies.
+          </p>
+        </header>
+        <div class="chat-body" id="chatBody">
+          <div class="chat-message chat-message-ai">
+            <p>Hi Mia, ready to help! Upload a crop image first, then ask me anything about the detected disease.</p>
+          </div>
+        </div>
+        <form class="chat-input-row" id="chatForm">
+          <button type="button" class="chat-voice-btn" id="voiceBtn" aria-label="Voice input"
+            title="Speak your question">
+            🎤
+          </button>
+          <input type="text" id="chatInput" placeholder="Ask about a field or trigger…"
+            data-i18n-placeholder="chat_placeholder" autocomplete="off" />
+          <button class="btn-primary btn-small" type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="https://js.puter.com/v2/"></script>
+  <script src="translations.js"></script>
+  <script src="js/agrishield-ai.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>

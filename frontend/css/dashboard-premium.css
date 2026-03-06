@@ -1,0 +1,1241 @@
+/* ═══════════════════════════════════════════════
+   AgriShieldAI — Premium Light Glassmorphism
+   Clean farm dashboard — FarmVista / CoachPro style
+   ═══════════════════════════════════════════════ */
+
+/* ── Light Glassmorphism Variables ── */
+.dashboard-body {
+  --bg-page: #EEF2F7;
+  --bg-content: #F4F7FB;
+  --bg-card-glass: rgba(255, 255, 255, 0.72);
+  --bg-card-solid: #FFFFFF;
+  --bg-sidebar: #0F6B3A;
+  --bg-sidebar-hover: rgba(255, 255, 255, 0.12);
+  --bg-sidebar-active: rgba(255, 255, 255, 0.18);
+  --bg-topbar: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.55);
+  --glass-border-card: rgba(0, 0, 0, 0.05);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  --glass-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.10);
+  --accent: #1B9E56;
+  --accent-light: #27C96E;
+  --accent-bg: rgba(27, 158, 86, 0.08);
+  --accent-bg-strong: rgba(27, 158, 86, 0.14);
+  --text-heading: #1A202C;
+  --text-body: #4A5568;
+  --text-muted-g: #A0AEC0;
+  --orange-g: #F6993F;
+  --blue-g: #4299E1;
+  --red-g: #FC5C65;
+  --radius-card: 20px;
+  --radius-pill: 14px;
+  background: var(--bg-page) !important;
+  color: var(--text-body);
+}
+
+/* ── Subtle gradient background ── */
+.dashboard-body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 75% 5%, rgba(27, 158, 86, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 15% 90%, rgba(66, 153, 225, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── App Shell ── */
+.dashboard-body .app-shell {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  grid-template-columns: 72px 1fr !important;
+  transition: grid-template-columns 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dashboard-body .app-shell.sidebar-expanded {
+  grid-template-columns: 250px 1fr !important;
+}
+
+/* ═══════ SIDEBAR — Collapsible Green ═══════ */
+.dashboard-body .sidebar {
+  background: var(--bg-sidebar);
+  border-right: none;
+  border-radius: 0 24px 24px 0;
+  padding: 20px 0 !important;
+  width: 72px !important;
+  min-width: 72px;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1), padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 24px rgba(15, 107, 58, 0.10);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.dashboard-body .app-shell.sidebar-expanded .sidebar {
+  width: 250px !important;
+  padding: 24px 18px !important;
+}
+
+.dashboard-body .sidebar-top {
+  padding: 0 16px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.dashboard-body .app-shell.sidebar-expanded .sidebar-top {
+  justify-content: space-between;
+  padding: 0;
+}
+
+.dashboard-body .sidebar-top .brand-name {
+  display: none;
+}
+
+.dashboard-body .app-shell.sidebar-expanded .sidebar-top .brand-name {
+  display: block;
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+
+.dashboard-body .brand-sidebar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.dashboard-body .brand-sidebar .brand-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 15px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+/* Sidebar Nav */
+.dashboard-body .sidebar-nav {
+  gap: 4px;
+  padding: 0 10px;
+}
+
+.dashboard-body .app-shell.sidebar-expanded .sidebar-nav {
+  padding: 0;
+}
+
+.dashboard-body .sidebar-link {
+  color: rgba(255, 255, 255, 0.55);
+  border-radius: 12px;
+  padding: 11px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+  position: relative;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.dashboard-body .app-shell.sidebar-expanded .sidebar-link {
+  justify-content: flex-start;
+  padding: 10px 14px;
+}
+
+.dashboard-body .sidebar-link .sidebar-label {
+  display: none;
+  white-space: nowrap;
+}
+
+.dashboard-body .app-shell.sidebar-expanded .sidebar-link .sidebar-label {
+  display: inline;
+}
+
+.dashboard-body .sidebar-link:hover {
+  color: #fff;
+  background: var(--bg-sidebar-hover);
+  transform: translateX(3px);
+}
+
+.dashboard-body .sidebar-link.active {
+  color: #fff;
+  background: linear-gradient(135deg, #1F7A63, #22C55E);
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+}
+
+.dashboard-body .sidebar-link.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 22px;
+  border-radius: 0 4px 4px 0;
+  background: #22C55E;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+}
+
+.dashboard-body .sidebar-icon {
+  font-size: 17px;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Sidebar Expand Toggle */
+.dashboard-body .sidebar-expand-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 0 auto;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.dashboard-body .app-shell.sidebar-expanded .sidebar-expand-btn {
+  margin: 0;
+}
+
+.dashboard-body .sidebar-expand-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* Sidebar Footer */
+.dashboard-body .sidebar-foot {
+  margin-top: auto;
+  padding: 0 10px;
+}
+
+.dashboard-body .app-shell.sidebar-expanded .sidebar-foot {
+  padding: 0;
+}
+
+.dashboard-body .sidebar-foot-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.dashboard-body .sidebar-foot-card .accent {
+  color: #A7F3D0;
+  font-weight: 700;
+}
+
+/* ═══════ TOPBAR — Glass ═══════ */
+.dashboard-body .topbar {
+  background: var(--bg-topbar);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  padding: 16px 30px;
+}
+
+.dashboard-body .topbar-greeting {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 2px;
+}
+
+.dashboard-body .topbar h1 {
+  color: var(--text-heading);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.dashboard-body .topbar-subtitle {
+  color: var(--text-muted-g);
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.dashboard-body .topbar-search input {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: var(--text-heading);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+}
+
+.dashboard-body .topbar-search input::placeholder {
+  color: var(--text-muted-g);
+}
+
+.dashboard-body .topbar-search input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(27, 158, 86, 0.1);
+}
+
+.dashboard-body .topbar-icon-btn {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  color: var(--text-body);
+  backdrop-filter: blur(8px);
+}
+
+.dashboard-body .topbar-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--text-heading);
+}
+
+.dashboard-body .profile-name {
+  color: var(--text-heading);
+}
+
+.dashboard-body .profile-role {
+  color: var(--text-muted-g);
+}
+
+.dashboard-body .tiny-select {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: var(--text-body);
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+}
+
+.dashboard-body .tiny-select:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+/* ═══════ MAIN + CONTENT ═══════ */
+.dashboard-body .main {
+  background: transparent;
+}
+
+.dashboard-body .content {
+  padding: 28px 30px;
+  background: transparent;
+}
+
+/* ═══════ PAGE SECTION SYSTEM ═══════ */
+.dashboard-body .page-section {
+  display: none;
+  animation: pageFadeIn 0.3s ease;
+}
+
+.dashboard-body .page-section.active {
+  display: block;
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════ DASHBOARD STATS ROW ═══════ */
+.dashboard-body .dash-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.dashboard-body .dash-stat-card {
+  background: var(--bg-card-glass);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid var(--glass-border-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--glass-shadow);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.dashboard-body .dash-stat-card:hover {
+  box-shadow: var(--glass-shadow-hover);
+  transform: translateY(-3px);
+}
+
+.dashboard-body .dash-stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.dashboard-body .dash-stat-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.dashboard-body .dash-stat-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-heading);
+  letter-spacing: -0.02em;
+}
+
+.dashboard-body .dash-stat-label {
+  font-size: 12px;
+  color: var(--text-muted-g);
+  margin-top: 2px;
+}
+
+.dashboard-body .dash-stat-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.dashboard-body .dash-stat-up {
+  background: rgba(27, 158, 86, 0.1);
+  color: #1B9E56;
+}
+
+.dashboard-body .dash-stat-down {
+  background: rgba(252, 92, 101, 0.1);
+  color: #FC5C65;
+}
+
+/* ═══════ PRODUCTION GAUGE ═══════ */
+.dashboard-body .production-gauge-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 10px 0;
+}
+
+.dashboard-body .production-gauge-wrap .confidence-svg {
+  width: 140px;
+  height: 140px;
+}
+
+.dashboard-body .production-gauge-wrap .confidence-value {
+  position: absolute;
+  text-align: center;
+}
+
+.dashboard-body .production-legend {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--text-muted-g);
+  margin-top: 8px;
+}
+
+/* ═══════ HARVEST LIST ═══════ */
+.dashboard-body .harvest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dashboard-body .harvest-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 12px;
+  transition: background 0.2s ease;
+}
+
+.dashboard-body .harvest-item:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.dashboard-body .harvest-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dashboard-body .harvest-name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+.dashboard-body .harvest-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-body);
+}
+
+/* ═══════ EMPTY STATE ═══════ */
+.dashboard-body .page-empty-state {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--text-muted-g);
+}
+
+.dashboard-body .page-empty-state .empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.dashboard-body .page-empty-state h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 8px;
+}
+
+.dashboard-body .page-empty-state p {
+  font-size: 14px;
+  max-width: 400px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ═══════ SETTINGS FORM ═══════ */
+.dashboard-body .settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dashboard-body .settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.dashboard-body .settings-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-heading);
+  min-width: 140px;
+}
+
+.dashboard-body .settings-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--text-body);
+  font-size: 14px;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s ease;
+}
+
+.dashboard-body .settings-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.dashboard-body .settings-toggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.dashboard-body .settings-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.dashboard-body .toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 24px;
+  transition: background 0.2s ease;
+}
+
+.dashboard-body .toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  bottom: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-body .settings-toggle input:checked + .toggle-slider {
+  background: var(--accent);
+}
+
+.dashboard-body .settings-toggle input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+}
+
+/* ═══════ RESPONSIVE — STATS ROW ═══════ */
+@media (max-width: 1024px) {
+  .dashboard-body .dash-stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-body .dash-stats-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ═══════ GLASS CARD ═══════ */
+.dashboard-body .card {
+  background: var(--bg-card-glass);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid var(--glass-border-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--glass-shadow);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.dashboard-body .card:hover {
+  box-shadow: var(--glass-shadow-hover);
+  transform: translateY(-3px);
+}
+
+.dashboard-body .card-header h2 {
+  color: var(--text-heading);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.dashboard-body .card-subtitle {
+  color: var(--text-muted-g);
+}
+
+.dashboard-body .chip-soft {
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 600;
+  border: 1px solid rgba(27, 158, 86, 0.15);
+}
+
+/* ═══════ UPLOAD ZONE ═══════ */
+.dashboard-body .upload-zone {
+  border: 2px dashed rgba(27, 158, 86, 0.25);
+  background: rgba(27, 158, 86, 0.03);
+  border-radius: 16px;
+}
+
+.dashboard-body .upload-zone:hover {
+  border-color: var(--accent);
+  background: rgba(27, 158, 86, 0.06);
+}
+
+.dashboard-body .upload-title {
+  color: var(--text-heading);
+}
+
+.dashboard-body .upload-subtitle,
+.dashboard-body .upload-hint {
+  color: var(--text-muted-g);
+}
+
+.dashboard-body .preview-name {
+  color: var(--text-heading);
+}
+
+.dashboard-body .preview-size {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+/* ═══════ BUTTONS ═══════ */
+.dashboard-body .btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 14px rgba(27, 158, 86, 0.25);
+  font-weight: 600;
+  border-radius: 12px;
+}
+
+.dashboard-body .btn-primary:hover {
+  background: #168A49;
+  box-shadow: 0 6px 20px rgba(27, 158, 86, 0.35);
+  transform: translateY(-1px);
+}
+
+.dashboard-body .btn-ghost-soft {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: var(--text-body);
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+}
+
+.dashboard-body .btn-ghost-soft:hover {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+/* ═══════ CHARTS ═══════ */
+.dashboard-body .chart-wrapper {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 14px;
+}
+
+/* ═══════ TABLE ═══════ */
+.dashboard-body .table-wrapper {
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.dashboard-body .table thead {
+  background: rgba(27, 158, 86, 0.04);
+}
+
+.dashboard-body .table th {
+  color: var(--text-muted-g);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.dashboard-body .table td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.dashboard-body .table tbody tr:hover {
+  background: rgba(27, 158, 86, 0.03);
+}
+
+/* ═══════ RISK BADGES ═══════ */
+.dashboard-body .risk-badge.high {
+  background: rgba(252, 92, 101, 0.1);
+  color: var(--red-g);
+}
+
+.dashboard-body .risk-badge.medium {
+  background: rgba(246, 153, 63, 0.1);
+  color: var(--orange-g);
+}
+
+.dashboard-body .risk-badge.low {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+/* ═══════ CONFIDENCE ═══════ */
+.dashboard-body .confidence-value span:first-child {
+  color: var(--accent);
+}
+
+.dashboard-body .conf-detail-row strong {
+  color: var(--text-heading);
+}
+
+/* ═══════ TOP 3 PREDICTIONS ═══════ */
+.dashboard-body .top3-item {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 12px;
+}
+
+.dashboard-body .top3-item:hover {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.dashboard-body .top3-rank {
+  background: var(--accent-bg-strong);
+  color: var(--accent);
+  border-radius: 8px;
+}
+
+.dashboard-body .top3-conf {
+  color: var(--accent);
+}
+
+/* ═══════ SEVERITY ═══════ */
+.dashboard-body .severity-bar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+}
+
+/* ═══════ PLANT HEALTH ═══════ */
+.dashboard-body .card-health {
+  border-left: 4px solid var(--accent);
+}
+
+.dashboard-body .card-health.disease {
+  border-left-color: var(--red-g);
+}
+
+.dashboard-body .health-label.healthy {
+  color: var(--accent);
+}
+
+.dashboard-body .health-label.diseased {
+  color: var(--red-g);
+}
+
+/* ═══════ ENV ROWS ═══════ */
+.dashboard-body .env-row {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 12px;
+}
+
+.dashboard-body .env-value {
+  color: var(--text-heading);
+}
+
+/* ═══════ TREATMENT ═══════ */
+.dashboard-body .treatment-row {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 12px;
+}
+
+.dashboard-body .treatment-row strong {
+  color: var(--text-heading);
+}
+
+/* ═══════ RECOVERY ═══════ */
+.dashboard-body .recovery-main {
+  background: linear-gradient(135deg, rgba(27, 158, 86, 0.07), rgba(39, 201, 110, 0.04));
+  border: 1px solid rgba(27, 158, 86, 0.12);
+  border-radius: 16px;
+}
+
+.dashboard-body .recovery-days {
+  color: var(--accent);
+}
+
+.dashboard-body .timeline-step.active .timeline-dot {
+  background: var(--accent);
+  border-color: var(--accent-light);
+  box-shadow: 0 0 0 3px rgba(27, 158, 86, 0.15);
+}
+
+.dashboard-body .timeline-step strong {
+  color: var(--text-heading);
+}
+
+/* ═══════ FERTILIZER ═══════ */
+.dashboard-body .fert-row {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 12px;
+}
+
+.dashboard-body .fert-value {
+  color: var(--text-heading);
+}
+
+/* ═══════ FORECAST ═══════ */
+.dashboard-body .forecast-bar-track {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+}
+
+.dashboard-body .forecast-explanation {
+  background: rgba(27, 158, 86, 0.05);
+  border-left-color: var(--accent);
+  border-radius: 12px;
+}
+
+/* ═══════ RAINFALL ═══════ */
+.dashboard-body .rainfall-stat {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 12px;
+}
+
+.dashboard-body .rainfall-advisory {
+  background: rgba(66, 153, 225, 0.05);
+  border-left-color: var(--blue-g);
+  border-radius: 12px;
+}
+
+/* ═══════ CROP RISK / RAINFALL CARDS ═══════ */
+.dashboard-body .crop-risk-forecast-card,
+.dashboard-body .rainfall-intel-card {
+  background: var(--bg-card-glass);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid var(--glass-border-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--glass-shadow);
+}
+
+.dashboard-body .crop-risk-forecast-card:hover,
+.dashboard-body .rainfall-intel-card:hover {
+  box-shadow: var(--glass-shadow-hover);
+  transform: translateY(-3px);
+}
+
+/* ═══════ PESTS ═══════ */
+.dashboard-body .pest-section h4 {
+  color: var(--accent);
+}
+
+.dashboard-body .pest-heading.pest-disease {
+  color: var(--red-g);
+}
+
+.dashboard-body .pest-list li {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+}
+
+.dashboard-body .pest-list li::before {
+  color: var(--accent-light);
+}
+
+/* ═══════ ADVISORY ═══════ */
+.dashboard-body .advisory-content h1,
+.dashboard-body .advisory-content h2,
+.dashboard-body .advisory-content h3,
+.dashboard-body .advisory-content h4,
+.dashboard-body .advisory-content h5 {
+  color: var(--accent);
+}
+
+.dashboard-body .typing-dots span {
+  background: var(--accent);
+}
+
+/* ═══════ SIMILAR PLANTS ═══════ */
+.dashboard-body .similar-plant-item {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 12px;
+}
+
+/* ═══════ DETECTION SOURCE ═══════ */
+.dashboard-body .detection-source-badge.ml-source {
+  background: linear-gradient(135deg, rgba(27, 158, 86, 0.1), rgba(39, 201, 110, 0.08));
+  color: var(--accent);
+  border: 1px solid rgba(27, 158, 86, 0.2);
+}
+
+.dashboard-body .detection-source-badge.vision-source {
+  background: linear-gradient(135deg, rgba(66, 153, 225, 0.1), rgba(139, 92, 246, 0.08));
+  color: var(--blue-g);
+  border: 1px solid rgba(66, 153, 225, 0.2);
+}
+
+/* ═══════ CHAT WIDGET ═══════ */
+.dashboard-body .chat-panel {
+  background: var(--bg-card-glass);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid var(--glass-border-card);
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+}
+
+.dashboard-body .chat-header {
+  background: linear-gradient(135deg, rgba(27, 158, 86, 0.06), transparent);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.dashboard-body .chat-title {
+  color: var(--text-heading);
+}
+
+.dashboard-body .chat-message-ai {
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 14px;
+}
+
+.dashboard-body .chat-message-user {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 14px;
+}
+
+.dashboard-body .chat-input-row {
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.dashboard-body .chat-input-row input {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+}
+
+.dashboard-body .chat-input-row input:focus {
+  border-color: var(--accent);
+}
+
+.dashboard-body .chat-voice-btn {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.dashboard-body .chat-voice-btn:hover {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+}
+
+.dashboard-body .chat-toggle {
+  background: var(--accent);
+  box-shadow: 0 8px 28px rgba(27, 158, 86, 0.35);
+}
+
+.dashboard-body .chat-toggle:hover {
+  box-shadow: 0 12px 36px rgba(27, 158, 86, 0.45);
+  transform: translateY(-3px);
+}
+
+/* ═══════ TOAST ═══════ */
+.dashboard-body .toast-notification {
+  background: var(--bg-card-glass);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border-card);
+  color: var(--text-heading);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+}
+
+/* ═══════ UPLOAD LOADING ═══════ */
+.dashboard-body .upload-spinner {
+  border-color: rgba(27, 158, 86, 0.15);
+  border-top-color: var(--accent);
+}
+
+.dashboard-body .upload-progress-bar {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+}
+
+.dashboard-body .upload-progress-fill {
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+}
+
+/* ═══════ FERT RECOVERY ═══════ */
+.dashboard-body .fert-recovery-help {
+  background: rgba(246, 153, 63, 0.06);
+  border-left-color: var(--orange-g);
+  border-radius: 12px;
+}
+
+/* ═══════ LISTENING INDICATOR ═══════ */
+.dashboard-body .listening-indicator {
+  background: linear-gradient(135deg, rgba(27, 158, 86, 0.06), rgba(66, 153, 225, 0.06));
+  border: 1px solid rgba(27, 158, 86, 0.12);
+  border-radius: 14px;
+}
+
+.dashboard-body .listening-indicator span {
+  color: var(--accent);
+}
+
+.dashboard-body .listening-waves span {
+  background: var(--accent);
+}
+
+/* ═══════ SIDEBAR FOOTER BUTTON ═══════ */
+.dashboard-body .sidebar-foot-card .btn-ghost-soft {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.dashboard-body .sidebar-foot-card .btn-ghost-soft:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ═══════ FORECAST + RAINFALL EXPLANATIONS ═══════ */
+.dashboard-body .forecast-explanation {
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: rgba(27, 158, 86, 0.05);
+  border-radius: 12px;
+  font-size: 13px;
+  color: var(--text-body);
+  line-height: 1.6;
+  border-left: 3px solid var(--accent);
+}
+
+.dashboard-body .rainfall-advisory {
+  margin-top: 10px;
+  padding: 14px 16px;
+  background: rgba(66, 153, 225, 0.05);
+  border-radius: 12px;
+  font-size: 13px;
+  color: var(--text-body);
+  line-height: 1.6;
+  border-left: 3px solid var(--blue-g);
+}
+
+/* ═══════ FORECAST/RAINFALL LOADING ═══════ */
+.dashboard-body .forecast-loading-text {
+  color: var(--text-muted-g);
+  font-size: 13px;
+}
+
+.dashboard-body .fert-recovery-text {
+  font-size: 13px;
+  color: var(--text-body);
+  margin-top: 4px;
+}
+
+/* ═══════ AVATAR ═══════ */
+.dashboard-body .avatar {
+  background: var(--accent-bg-strong);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ═══════ PAYOUT METER ═══════ */
+.dashboard-body .meter-bg {
+  stroke: rgba(0, 0, 0, 0.06);
+}
+
+.dashboard-body .payout-progress-bar {
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+}
+
+.dashboard-body .payout-progress-bar span {
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  border-radius: 8px;
+}
+
+/* ═══════ SCROLLBAR ═══════ */
+.dashboard-body ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.dashboard-body ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dashboard-body ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+}
+
+.dashboard-body ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.14);
+}
+
+/* ═══════ RESPONSIVE ═══════ */
+@media (max-width: 1024px) {
+  .dashboard-body .app-shell {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dashboard-body .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 250px !important;
+    border-radius: 0 24px 24px 0;
+    transform: translateX(-100%);
+    z-index: 50;
+    padding: 24px 18px;
+  }
+
+  .dashboard-body .sidebar.is-open {
+    transform: translateX(0);
+    box-shadow: 20px 0 60px rgba(0, 0, 0, 0.15);
+  }
+
+  .dashboard-body .sidebar .sidebar-label {
+    display: inline !important;
+  }
+
+  .dashboard-body .sidebar .sidebar-link {
+    justify-content: flex-start;
+    padding: 10px 14px;
+  }
+
+  .dashboard-body .sidebar-top {
+    justify-content: space-between;
+    padding: 0;
+  }
+
+  .dashboard-body .sidebar-top .brand-name {
+    display: block !important;
+  }
+
+  .dashboard-body .sidebar-nav {
+    padding: 0;
+  }
+
+  .dashboard-body .sidebar-foot {
+    padding: 0;
+  }
+}
+
+@media (max-width: 820px) {
+  .dashboard-body .sidebar-toggle {
+    display: flex;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    color: var(--text-body);
+    backdrop-filter: blur(8px);
+  }
+
+  .dashboard-body .sidebar-toggle span {
+    background: var(--text-body);
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-body .content {
+    padding: 16px;
+  }
+
+  .dashboard-body .topbar {
+    padding: 12px 16px;
+  }
+
+  .dashboard-body .topbar h1 {
+    font-size: 18px;
+  }
+}
