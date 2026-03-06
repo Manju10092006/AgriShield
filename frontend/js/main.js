@@ -93,33 +93,185 @@
     Arabic: 'ar'
   };
 
-  /** Speak text using browser TTS in the selected language with proper voice matching */
-  function speakAI(text, language) {
-    if (!text || !voiceEnabled) return;
-    const langCode = LANGUAGE_VOICE_MAP[language] || 'en';
+  function prepareTextForSpeech(text) {
+    if (!text) return '';
+    let clean = String(text)
+      // Strip markdown formatting
+      .replace(/\*\*(.*?)\*\*/g, '$1')
+      .replace(/\*(.*?)\*/g, '$1')
+      .replace(/#{1,6}\s/g, '')
+      .replace(/```[\s\S]*?```/g, '')
+      .replace(/`([^`]+)`/g, '$1')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      // Bullets / numbering
+      .replace(/^\s*[-*+]\s/gm, '')
+      .replace(/^\s*\d+\.\s/gm, '')
+      // Newlines & extra spaces
+      .replace(/\n{2,}/g, '. ')
+      .replace(/\n/g, ' ')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
 
-    // If Puter.js TTS is available, prefer it for full multilingual support
-    if (window.AgriShieldAI && typeof window.AgriShieldAI.speakWithPuter === 'function') {
-      try {
-        window.AgriShieldAI.speakWithPuter(text, langCode);
-        return;
-      } catch (e) {
-        console.warn('[AgriShield] Puter TTS failed, falling back to browser TTS:', e.message);
-      }
+    if (!clean) return '';
+
+    // Limit to ~500 chars and cut at sentence boundary when possible
+    if (clean.length > 500) {
+      const cutAt = clean.lastIndexOf('.', 500);
+      clean = cutAt > 200 ? clean.substring(0, cutAt + 1) : clean.substring(0, 500);
     }
 
-    // Browser TTS fallback
-    if (!window.speechSynthesis) return;
-    const voices = speechSynthesis.getVoices();
-    const voice =
-      voices.find(v => v.lang.toLowerCase().startsWith(langCode.toLowerCase())) ||
-      voices.find(v => v.lang.toLowerCase().startsWith('en'));
+    return clean;
+  }
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    if (voice) utterance.voice = voice;
-    utterance.lang = voice?.lang || langCode;
-    speechSynthesis.cancel();
-    speechSynthesis.speak(utterance);
+  function getOpenAIApiKey() {
+    if (window.AGRISHIELD_OPENAI_KEY && typeof window.AGRISHIELD_OPENAI_KEY === 'string') {
+      return window.AGRISHIELD_OPENAI_KEY.trim();
+    }
+    try {
+      const stored = localStorage.getItem('agrishield_openai_key');
+      return stored && stored.trim() ? stored.trim() : null;
+    } catch {
+      return null;
+    }
+  }
+
+  async function speakWithOpenAI(prepared, langCode, apiKey) {
+    if (!apiKey) return false;
+    try {
+      const resp = await fetch('https://api.openai.com/v1/audio/speech', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + apiKey,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini-tts',
+          voice: 'alloy',
+          input: prepared
+        })
+      });
+      if (!resp.ok) {
+        console.warn('[AgriShield] OpenAI TTS HTTP error:', resp.status);
+        return false;
+      }
+      const arrayBuffer = await resp.arrayBuffer();
+      const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' });
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      return await new Promise((resolve) => {
+        audio.addEventListener('ended', () => {
+          URL.revokeObjectURL(url);
+          resolve(true);
+        });
+        audio.addEventListener('error', () => {
+          URL.revokeObjectURL(url);
+          resolve(false);
+        });
+        audio.play().catch(() => {
+          URL.revokeObjectURL(url);
+          resolve(false);
+        });
+      });
+    } catch (e) {
+      console.warn('[AgriShield] OpenAI TTS failed:', e.message);
+      return false;
+    }
+  }
+
+  /** Speak text with multilingual TTS cascade */
+  async function speakAI(text, language) {
+    if (!text || !voiceEnabled) return;
+
+    const prepared = prepareTextForSpeech(text);
+    if (!prepared) return;
+
+    const langCode = LANGUAGE_VOICE_MAP[language] || 'en';
+
+    // 1) Try client-side OpenAI TTS (if user storage key is set)
+    try {
+      const apiKey = getOpenAIApiKey();
+      if (apiKey) {
+        const ok = await speakWithOpenAI(prepared, langCode, apiKey);
+        if (ok) return;
+      }
+    } catch (e) {
+      console.warn('[TTS] Client OpenAI failed:', e.message);
+    }
+
+    // 2) Try server-side TTS endpoint (/ai/speak) — only if server likely has OpenAI
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000);
+      const ttsRes = await fetch(AI_BASE + '/speak', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: prepared, language: langCode }),
+        signal: controller.signal
+      });
+      clearTimeout(timeout);
+      if (ttsRes.ok) {
+        const blob = await ttsRes.blob();
+        if (blob.size > 100) {  // Valid audio file
+          const url = URL.createObjectURL(blob);
+          const audio = new Audio(url);
+          await new Promise((resolve) => {
+            audio.addEventListener('ended', () => { URL.revokeObjectURL(url); resolve(); });
+            audio.addEventListener('error', () => { URL.revokeObjectURL(url); resolve(); });
+            audio.play().catch(() => { URL.revokeObjectURL(url); resolve(); });
+          });
+          return;
+        }
+      }
+    } catch (e) {
+      // Silently skip — not an error, server just doesn't have OpenAI key
+    }
+
+    // 3) Browser TTS fallback — guaranteed to work
+    useBrowserTTS(prepared, langCode);
+  }
+
+  /** Browser speechSynthesis with robust voice matching */
+  function useBrowserTTS(text, langCode) {
+    if (!window.speechSynthesis) return;
+
+    // BCP-47 locale mapping for Indian languages
+    const BCP47_MAP = {
+      'en': 'en-US', 'hi': 'hi-IN', 'te': 'te-IN', 'ta': 'ta-IN',
+      'kn': 'kn-IN', 'mr': 'mr-IN', 'ml': 'ml-IN', 'gu': 'gu-IN',
+      'pa': 'pa-IN', 'bn': 'bn-IN', 'or': 'or-IN', 'ur': 'ur-IN',
+      'es': 'es-ES', 'fr': 'fr-FR', 'de': 'de-DE', 'ja': 'ja-JP',
+      'zh': 'zh-CN', 'ar': 'ar-SA'
+    };
+    const locale = BCP47_MAP[langCode] || langCode;
+
+    function doSpeak() {
+      const voices = speechSynthesis.getVoices();
+      // Prefer exact locale match, then prefix match, then English
+      const voice =
+        voices.find(v => v.lang === locale) ||
+        voices.find(v => v.lang.toLowerCase().startsWith(langCode.toLowerCase())) ||
+        voices.find(v => v.lang.toLowerCase().startsWith('en'));
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      if (voice) utterance.voice = voice;
+      utterance.lang = voice?.lang || locale;
+      utterance.rate = 0.95;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+
+    // Chrome loads voices asynchronously — wait if needed
+    const voices = speechSynthesis.getVoices();
+    if (voices.length > 0) {
+      doSpeak();
+    } else {
+      speechSynthesis.onvoiceschanged = () => {
+        speechSynthesis.onvoiceschanged = null;
+        doSpeak();
+      };
+      // Safety: if voices never load, speak anyway after 500ms
+      setTimeout(doSpeak, 500);
+    }
   }
 
   // Preload voices (some browsers load them async)
@@ -288,7 +440,7 @@
         const isExpanded = appShell.classList.contains('sidebar-expanded');
         expandBtn.textContent = isExpanded ? '✕' : '☰';
         expandBtn.title = isExpanded ? 'Collapse sidebar' : 'Expand sidebar';
-        try { localStorage.setItem('sidebar_expanded', String(isExpanded)); } catch {}
+        try { localStorage.setItem('sidebar_expanded', String(isExpanded)); } catch { }
       });
       if (appShell.classList.contains('sidebar-expanded')) {
         expandBtn.textContent = '✕';
@@ -341,7 +493,7 @@
         topbarTitle.textContent = PAGE_TITLES[page];
       }
       // Save active page
-      try { localStorage.setItem('active_page', page); } catch {}
+      try { localStorage.setItem('active_page', page); } catch { }
       // Close mobile sidebar
       sidebar.classList.remove('is-open');
       // Scroll to top
@@ -390,12 +542,23 @@
         window.AgriShield.selectedLanguageName = LANGUAGE_CONFIG[val]?.label || 'English';
       }
       updateUIText(currentLang);
+
+      // Sync speech recognition language
       if (window._agriRecognition) {
         window._agriRecognition.lang = LANGUAGE_CONFIG[val]?.locale || 'en-US';
       }
+
+      // Sync VoiceAssistant language
+      if (window._agriVoiceAssistant && window._agriVoiceAssistant.setLanguage) {
+        window._agriVoiceAssistant.setLanguage(val);
+      }
+
       // Keep both selectors in sync
       select.value = val;
       if (settingsSelect) settingsSelect.value = val;
+
+      // Voice confirmation in the newly selected language
+      announceLanguageChange(val);
     }
 
     select.addEventListener('change', () => applyLang(select.value));
@@ -404,31 +567,62 @@
     }
   }
 
+  function announceLanguageChange(langCode) {
+    const greetings = {
+      en: 'Language changed to English.',
+      hi: 'भाषा हिंदी में बदल गई।',
+      te: 'భాష తెలుగులోకి మారింది.',
+      ta: 'மொழி தமிழுக்கு மாற்றப்பட்டது.',
+      kn: 'ಭಾಷೆ ಕನ್ನಡಕ್ಕೆ ಬದಲಾಯಿಸಲಾಗಿದೆ.',
+      mr: 'भाषा मराठीत बदलली.',
+    };
+    const msg = greetings[langCode];
+    if (!msg) return;
+    const label = LANGUAGE_CONFIG[langCode]?.label || 'English';
+    setTimeout(() => speakAI(msg, label), 600);
+  }
+
   function updateUIText(langCode) {
-    const langData = TRANSLATIONS[langCode] || TRANSLATIONS.en || {};
+    // Sync global state with the i18n engine
+    window.AgriShield_currentLang = langCode;
 
-    // Simple text nodes
-    qsa('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      const val = langData[key];
-      if (val) el.textContent = val;
-    });
+    // Use the new translation engine if available
+    if (window.i18n && window.i18n.applyTranslations) {
+      window.i18n.applyTranslations();
+    } else {
+      // Fallback: manual DOM translation
+      var langData = TRANSLATIONS[langCode] || TRANSLATIONS.en || {};
 
-    // Placeholders
-    qsa('[data-i18n-placeholder]').forEach(el => {
-      const key = el.getAttribute('data-i18n-placeholder');
-      const val = langData[key];
-      if (val) el.placeholder = val;
-    });
+      qsa('[data-i18n]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n');
+        var val = langData[key] || (TRANSLATIONS.en || {})[key];
+        if (!val && window.i18n) val = window.i18n.formatMissingKey(key);
+        if (val) el.textContent = val;
+      });
+
+      qsa('[data-i18n-placeholder]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n-placeholder');
+        var val = langData[key] || (TRANSLATIONS.en || {})[key];
+        if (val) el.placeholder = val;
+      });
+
+      qsa('[data-i18n-title]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n-title');
+        var val = langData[key] || (TRANSLATIONS.en || {})[key];
+        if (val) el.title = val;
+      });
+    }
 
     // Sidebar links (icon + text)
-    qsa('.sidebar-link').forEach(link => {
-      const section = link.getAttribute('data-page') || link.getAttribute('data-section');
+    qsa('.sidebar-link').forEach(function (link) {
+      var section = link.getAttribute('data-page') || link.getAttribute('data-section');
       if (!section) return;
-      const key = section.replace(/-/g, '_') + '_label';
-      const val = langData[key];
+      var key = section.replace(/-/g, '_') + '_label';
+      var langData = TRANSLATIONS[langCode] || TRANSLATIONS.en || {};
+      var val = langData[key] || (TRANSLATIONS.en || {})[key];
+      if (!val && window.i18n) val = window.i18n.t(key);
       if (!val) return;
-      const labelSpan = link.querySelector('.sidebar-label');
+      var labelSpan = link.querySelector('.sidebar-label');
       if (labelSpan) {
         labelSpan.textContent = val;
       }
@@ -975,6 +1169,29 @@
     const treatmentEmpty = doc.getElementById('treatmentEmptyState');
     if (plantEmpty) plantEmpty.style.display = 'none';
     if (treatmentEmpty) treatmentEmpty.style.display = 'none';
+
+    // 🔊 Announce detection result in the current UI language
+    announceDetectionResult(predicted_class, confidence);
+  }
+
+  function announceDetectionResult(predictedClass, confidence) {
+    if (!predictedClass) return;
+    const plantName = extractPlantName(predictedClass);
+    const diseaseText = predictedClass.replace(/_+/g, ' ');
+    const confPercent = Math.round((confidence || 0) * 100);
+
+    const messages = {
+      en: `${plantName} detected with ${diseaseText} at ${confPercent}% confidence.`,
+      hi: `${plantName} में ${diseaseText} ${confPercent}% विश्वास के साथ पता चला।`,
+      te: `${plantName} పంటలో ${diseaseText} ${confPercent}% విశ్వసనీయతతో గుర్తించబడింది.`,
+      ta: `${plantName} பயிரில் ${diseaseText} ${confPercent}% நம்பகத்தன்மையுடன் கண்டறியப்பட்டது.`,
+      kn: `${plantName} ಬೆಳೆಯಲ್ಲಿ ${diseaseText} ${confPercent}% ವಿಶ್ವಾಸದೊಂದಿಗೆ ಪತ್ತೆಯಾಗಿದೆ.`,
+      mr: `${plantName} पिकात ${diseaseText} ${confPercent}% विश्वासार्हतेसह आढळले.`,
+    };
+
+    const msg = messages[currentLang] || messages.en;
+    const label = LANGUAGE_CONFIG[currentLang]?.label || 'English';
+    setTimeout(() => speakAI(msg, label), 1000);
   }
 
   function hideResultCards() {
@@ -1043,9 +1260,33 @@
     requestAnimationFrame(update);
   }
 
-  /* ─── AI Helper: Gemini backend (stable path) ─── */
+  /* ─── AI Helper: Gemini backend with Smart Caching ─── */
   async function callAdvisoryAI(payload) {
-    // Always call the Node AI server (Gemini) for now to avoid any Puter.js variability
+    // Use the cached Gemini Advisory service if available
+    if (window.GeminiAdvisory && typeof window.GeminiAdvisory.getAdvisory === 'function') {
+      const advisory = await window.GeminiAdvisory.getAdvisory(
+        payload.plant,
+        payload.disease,
+        parseFloat(payload.confidence) || 0,
+        'India',
+        payload.language || 'English'
+      );
+      if (advisory) {
+        // Map the cached advisory result to the expected format
+        return {
+          advisory_markdown: advisory.advisoryMarkdown || '',
+          immediate: advisory.immediate || (advisory.organicTreatment || []).join('. '),
+          organic: (advisory.organicTreatment || []).join('. '),
+          chemical: (advisory.chemicalTreatment || []).join('. '),
+          prevention: (advisory.preventionTips || []).join('. '),
+          recovery: advisory.recoveryTimeline || '',
+          fertilizer: advisory.fertilizerRecommendation || '',
+          source: advisory.source || 'cached'
+        };
+      }
+    }
+
+    // Fallback: direct API call
     const res = await fetch(AI_BASE + '/advisory', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1059,7 +1300,22 @@
   }
 
   async function callChatAI(payload) {
-    // Always call the Node AI server (Gemini) for stable behaviour
+    // Use the ChatbotService if available
+    if (window.ChatbotService && typeof window.ChatbotService.sendChatMessage === 'function') {
+      const response = await window.ChatbotService.sendChatMessage(
+        payload.message,
+        payload.context ? {
+          crop: payload.context.plant,
+          disease: payload.context.disease,
+          confidence: payload.context.confidence,
+          environment: payload.context.environment
+        } : {},
+        payload.language || 'English'
+      );
+      return { response };
+    }
+
+    // Fallback: direct API call
     const res = await fetch(AI_BASE + '/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1111,7 +1367,18 @@
         confidence: (confidence * 100).toFixed(1) + '%',
         language: LANGUAGE_CONFIG[currentLang]?.label || 'English'
       };
-      const ai = await callAdvisoryAI(aiPayload);
+
+      // Use error handler wrapper if available
+      const safeCall = window.AIErrorHandler
+        ? () => window.AIErrorHandler.safeAICall(
+          () => callAdvisoryAI(aiPayload),
+          null,
+          'Advisory generation failed'
+        )
+        : () => callAdvisoryAI(aiPayload);
+
+      const ai = await safeCall();
+      if (!ai) throw new Error('Advisory returned null');
       lastAdvisory = ai;
 
       clearTimeout(safetyTimer);
@@ -1419,59 +1686,53 @@
     if (_fertilizerPending) return;
     _fertilizerPending = true;
 
+    // ── STRATEGY: Use advisory data first (no extra API call) ──
+    // The advisory already includes fertilizer info. Only call the
+    // separate /fertilizer-plan endpoint if advisory data is missing.
+    if (lastAdvisory && lastAdvisory.fertilizer) {
+      fertBody.style.display = 'flex';
+      fertLoading.style.display = 'none';
+      _applyFertilizerFromAdvisory(lastAdvisory);
+      _fertilizerPending = false;
+      return;
+    }
+
     fertBody.style.display = 'none';
     fertLoading.style.display = 'block';
 
-    // Safety timeout — never load forever
+    // Safety timeout — 8s max, then show fallback
     const safetyTimer = setTimeout(() => {
       console.warn('[AgriShield] Fertilizer safety timeout reached');
       fertLoading.style.display = 'none';
       fertBody.style.display = 'flex';
       _applyFertilizerFallback();
       _fertilizerPending = false;
-    }, 15000);
+    }, 8000);
 
     try {
       const plantData = getPlantData(data.predicted_class);
       const langLabel = LANGUAGE_CONFIG[currentLang]?.label || 'English';
       let fertData = null;
 
-      // Try Puter.js first
-      if (window.AgriShieldAI) {
-        try {
-          fertData = await window.AgriShieldAI.generateFertilizerAI(
-            plantData.displayName,
-            data.predicted_class.replace(/_+/g, ' '),
-            (data.confidence * 100).toFixed(1) + '%',
-            plantData.soil,
-            currentLang
-          );
-        } catch (pErr) {
-          console.warn('[AgriShield] Puter fertilizer failed, trying Gemini:', pErr.message);
-        }
-      }
-
-      // Gemini fallback
-      if (!fertData) {
-        try {
-          const controller = new AbortController();
-          const fetchTimeout = setTimeout(() => controller.abort(), 10000);
-          const aiRes = await fetch(AI_BASE + '/fertilizer-plan', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              plant: plantData.displayName,
-              disease: data.predicted_class.replace(/_+/g, ' '),
-              confidence: (data.confidence * 100).toFixed(1) + '%',
-              soilType: plantData.soil,
-              language: langLabel
-            }),
-            signal: controller.signal
-          });
-          clearTimeout(fetchTimeout);
-          if (aiRes.ok) fertData = await aiRes.json();
-        } catch { /* fallback below */ }
-      }
+      // Try the AI server endpoint (with a tight 6s timeout)
+      try {
+        const controller = new AbortController();
+        const fetchTimeout = setTimeout(() => controller.abort(), 6000);
+        const aiRes = await fetch(AI_BASE + '/fertilizer-plan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            plant: plantData.displayName,
+            disease: data.predicted_class.replace(/_+/g, ' '),
+            confidence: (data.confidence * 100).toFixed(1) + '%',
+            soilType: plantData.soil,
+            language: langLabel
+          }),
+          signal: controller.signal
+        });
+        clearTimeout(fetchTimeout);
+        if (aiRes.ok) fertData = await aiRes.json();
+      } catch { /* fallback below */ }
 
       clearTimeout(safetyTimer);
       fertLoading.style.display = 'none';
@@ -1483,11 +1744,12 @@
         doc.getElementById('fertMethod').textContent = fertData.application_method || 'Apply near root zone.';
         doc.getElementById('fertFrequency').textContent = fertData.frequency || 'Every 2–3 weeks.';
 
-        // Add disease recovery help if container exists
+        const fertRecoveryRow = doc.getElementById('fertRecoveryRow');
         const fertRecovery = doc.getElementById('fertRecoveryHelp');
         if (fertRecovery && fertData.disease_recovery_help) {
           fertRecovery.textContent = fertData.disease_recovery_help;
           fertRecovery.style.display = 'block';
+          if (fertRecoveryRow) fertRecoveryRow.style.display = '';
         }
       } else {
         _applyFertilizerFallback();
@@ -1501,6 +1763,21 @@
     } finally {
       _fertilizerPending = false;
     }
+  }
+
+  /** Parse fertilizer info from the advisory response text */
+  function _applyFertilizerFromAdvisory(advisory) {
+    const fertName = doc.getElementById('fertName');
+    const fertNPK = doc.getElementById('fertNPK');
+    const fertMethod = doc.getElementById('fertMethod');
+    const fertFrequency = doc.getElementById('fertFrequency');
+
+    // Advisory may have structured fertilizer text
+    const fertText = advisory.fertilizer || '';
+    if (fertName) fertName.textContent = fertText || 'Balanced NPK fertilizer';
+    if (fertNPK) fertNPK.textContent = advisory.npk || '10-10-10';
+    if (fertMethod) fertMethod.textContent = advisory.method || 'Apply near root zone.';
+    if (fertFrequency) fertFrequency.textContent = advisory.frequency || 'Every 2–3 weeks.';
   }
 
   function _applyFertilizerFallback() {

@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String           @id @default(cuid())
+  email     String           @unique
+  password  String
+  name      String
+  role      Role             @default(FARMER)
+  region    String?
+  createdAt DateTime         @default(now())
+  claims    InsuranceClaim[]
+  logs      AdminLog[]
+}
+
+enum Role {
+  FARMER
+  AGRONOMIST
+  ADMIN
+}
+
+model WeatherData {
+  id          String   @id @default(cuid())
+  region      String
+  rainfall    Float
+  humidity    Float
+  temperature Float
+  anomalyPct  Float   @default(0)
+  fetchedAt   DateTime @default(now())
+}
+
+model RiskForecast {
+  id           String   @id @default(cuid())
+  field        String
+  crop         String
+  riskScore    Float
+  severity     String
+  trigger      String
+  forecastDate DateTime
+  createdAt    DateTime @default(now())
+}
+
+model InsuranceClaim {
+  id             String      @id @default(cuid())
+  userId         String
+  user           User        @relation(fields: [userId], references: [id])
+  field          String
+  crop           String
+  riskScore      Float
+  disease        String?
+  status         ClaimStatus @default(PENDING)
+  payoutEstimate Float       @default(0)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+enum ClaimStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PROCESSING
+}
+
+model AdminLog {
+  id        String    @id @default(cuid())
+  userId    String?
+  user      User?     @relation(fields: [userId], references: [id])
+  action    LogAction
+  details   Json
+  timestamp DateTime  @default(now())
+}
+
+enum LogAction {
+  CROP_UPLOAD
+  AI_PREDICTION
+  INSURANCE_CLAIM
+  USER_LOGIN
+  USER_REGISTER
+  SETTINGS_CHANGE
+  PAGE_VIEW
+}
+
